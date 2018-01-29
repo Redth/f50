@@ -132,19 +132,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.Android\Core.Android.csproj">
       <Project>{D5C59679-2E23-4A18-B469-650EB4D89CE5}</Project>
-      <Name>Core.Android</Name>
+      <Name>Xamarin.Services.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Geolocation\Geolocation.Android\Geolocation.Android.csproj">
-      <Project>{4662166B-0FA4-4F8B-82AD-9C2DCDA141A8}</Project>
-      <Name>Geolocation.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Permissions\Permissions.Android\Permissions.Android.csproj">
-      <Project>{2A0A512B-C995-48C0-91A9-91F2FCA98FF5}</Project>
-      <Name>Permissions.Android</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\TextToSpeech\TextToSpeech.Android\TextToSpeech.Android.csproj">
-      <Project>{7E821C75-4C03-479D-A460-CADFA8AD7AC3}</Project>
-      <Name>TextToSpeech.Android</Name>
+    <ProjectReference Include="..\..\Source\Xamarin.Services.Android\Xamarin.Services.Android.csproj">
+      <Project>{D5C59679-2E23-4A18-B469-650EB4D89CE5}</Project>
+      <Name>Xamarin.Services.Android</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

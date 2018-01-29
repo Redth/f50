@@ -123,15 +123,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core.iOS\Core.iOS.csproj">
       <Project>{B593425E-C81D-407C-A4E7-0ABBB59F7B56}</Project>
-      <Name>Core.iOS</Name>
+      <Name>Xamarin.Services.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\TextToSpeech\TextToSpeech.iOS\TextToSpeech.iOS.csproj">
-      <Project>{CA785F34-BA09-4046-A5FD-0AC2F0298C52}</Project>
-      <Name>TextToSpeech.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Geolocation\Geolocation.iOS\Geolocation.iOS.csproj">
-      <Project>{CB9E41D1-06FB-410B-AC9E-1EDF0EEE3E66}</Project>
-      <Name>Geolocation.iOS</Name>
+    <ProjectReference Include="..\..\Source\Xamarin.Services.iOS\Xamarin.Services.iOS.csproj">
+      <Project>{B593425E-C81D-407C-A4E7-0ABBB59F7B56}</Project>
+      <Name>Xamarin.Services.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
