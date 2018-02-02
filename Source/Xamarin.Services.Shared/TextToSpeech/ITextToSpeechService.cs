@@ -19,13 +19,13 @@ namespace Xamarin.Services.Interfaces
         /// <param name="cancelToken">Canelation token to stop speak</param> 
         /// <exception cref="ArgumentNullException">Thrown if text is null</exception>
         /// <exception cref="ArgumentException">Thrown if text length is greater than maximum allowed</exception>
-        Task Speak (string text, Locale? crossLocale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default (CancellationToken));
+        Task SpeakAsync (string text, Locale? crossLocale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default (CancellationToken));
 
         /// <summary>
         /// Get avalid list of installed languages for TTS
         /// </summary>
         /// <returns></returns>
-        Task<IEnumerable<Locale>> GetInstalledLanguages ();
+        Task<IEnumerable<Locale>> GetInstalledLanguagesAsync ();
 
         /// <summary>
         /// Gets the max string length of the speech engine

@@ -120,7 +120,7 @@ namespace Xamarin.Services.Geolocation
         /// <summary>
         /// Gets if device supports heading
         /// </summary>
-        public bool SupportsHeading => CLLocationManager.HeadingAvailable;
+        public bool IsHeadingSupported => CLLocationManager.HeadingAvailable;
 #elif __TVOS__
         /// <summary>
         /// Gets if device supports heading
@@ -132,12 +132,12 @@ namespace Xamarin.Services.Geolocation
         /// <summary>
         /// Gets if geolocation is available on device
         /// </summary>
-        public bool IsGeolocationAvailable => true; //all iOS devices support Geolocation
+        public bool IsSupported => true; //all iOS devices support Geolocation
 
         /// <summary>
         /// Gets if geolocation is enabled on device
         /// </summary>
-        public bool IsGeolocationEnabled
+        public bool IsEnabled
         {
             get
             {         
@@ -277,7 +277,7 @@ namespace Xamarin.Services.Geolocation
 
 
 #if __IOS__
-                if (includeHeading && SupportsHeading)
+                if (includeHeading && IsHeadingSupported)
                     m.StartUpdatingHeading();
 #endif
 
