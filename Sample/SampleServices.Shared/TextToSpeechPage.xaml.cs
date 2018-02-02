@@ -15,7 +15,7 @@ namespace SampleServices
         async void Speak_Clicked (object sender, System.EventArgs e)
         {
             var tts = new Xamarin.Services.TextToSpeech.TextToSpeechService();
-            await tts.Speak (textSpeak.Text);
+            await tts.SpeakAsync (textSpeak.Text);
         }
     }
 }

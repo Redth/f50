@@ -70,7 +70,7 @@ namespace Xamarin.Services.TextToSpeech
         /// <param name="cancelToken">Canelation token to stop speak</param>
         /// <exception cref="ArgumentNullException">Thrown if text is null</exception>
         /// <exception cref="ArgumentException">Thrown if text length is greater than maximum allowed</exception>
-        public async Task Speak (string text, Locale? locale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default (CancellationToken))
+        public async Task SpeakAsync (string text, Locale? locale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default (CancellationToken))
         {
             if (text == null)
                 throw new ArgumentNullException (nameof (text), "Text can not be null");
@@ -181,7 +181,7 @@ namespace Xamarin.Services.TextToSpeech
         /// Get all installed and valide lanaguages
         /// </summary>
         /// <returns>List of CrossLocales</returns>
-        public async Task<IEnumerable<Locale>> GetInstalledLanguages ()
+        public async Task<IEnumerable<Locale>> GetInstalledLanguagesAsync ()
         {
             await Init ();
             if (textToSpeech != null && initialized) {
