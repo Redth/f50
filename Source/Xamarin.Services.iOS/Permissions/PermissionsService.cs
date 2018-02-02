@@ -34,7 +34,7 @@ namespace Xamarin.Services.Permissions
         /// Gets the current permissions implementation
         /// </summary>
         /// <value>The current.</value>
-        public static PermissionsService Current
+        internal static PermissionsService Current
         {
             get {
                 if (current == null)

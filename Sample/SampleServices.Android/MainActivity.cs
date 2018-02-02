@@ -31,7 +31,7 @@ namespace SampleServices.Droid
         // This is required to handle permissions automatically for the user
         public override void OnRequestPermissionsResult (int requestCode, string[] permissions, Permission[] grantResults)
         {
-            global::Xamarin.Services.Permissions.PermissionsService.Current.OnRequestPermissionsResult (requestCode, permissions, grantResults);
+            global::Xamarin.Services.Platform.OnRequestPermissionsResult (requestCode, permissions, grantResults);
         }
 
         // I don't think anyone ever really does this, and I'm not sure it's actually necessary, but I've added it

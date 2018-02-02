@@ -30,7 +30,7 @@ namespace Xamarin.Services.Permissions
         /// <summary>
         /// Current Permissions Implementation
         /// </summary>
-        public static PermissionsService Current
+        internal static PermissionsService Current
         {
             get {
                 if (current == null)
@@ -207,7 +207,7 @@ namespace Xamarin.Services.Permissions
         /// <param name="requestCode"></param>
         /// <param name="permissions"></param>
         /// <param name="grantResults"></param>
-        public void OnRequestPermissionsResult(int requestCode, string[] permissions, global::Android.Content.PM.Permission[] grantResults)
+        internal void OnRequestPermissionsResult(int requestCode, string[] permissions, global::Android.Content.PM.Permission[] grantResults)
         {
             if (requestCode != permissioncode)
                 return;

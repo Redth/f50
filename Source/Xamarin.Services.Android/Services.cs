@@ -24,14 +24,19 @@ namespace Xamarin.Services
             }
         }
 
+        public static void OnRequestPermissionsResult (int requestCode, string[] permissions, global::Android.Content.PM.Permission[] grantResults)
+        {
+            Permissions.PermissionsService.Current.OnRequestPermissionsResult (requestCode, permissions, grantResults);
+        }
+
         static Application application;
         static ActivityLifecycleContextListener lifecycleListener;
 
-        public static Context CurrentContext {
+        internal static Context CurrentContext {
             get { return lifecycleListener?.Context ?? application?.ApplicationContext; }
         }
 
-        public static Activity CurrentActivity {
+        internal static Activity CurrentActivity {
             get { return lifecycleListener?.Activity; }
         }
     }
