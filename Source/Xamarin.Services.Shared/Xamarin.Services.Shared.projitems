@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{E07F6E41-3DBB-4DB9-A3A4-3F4B8EADB653}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Xamarin.Services</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ActivityType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Address.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\IGeolocationService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ListenerSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Position.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Permissions\IPermissions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionEnums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\ITextToSpeechService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\Locale.cs" />
+  </ItemGroup>
+</Project>
