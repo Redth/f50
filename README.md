@@ -4,7 +4,7 @@
 
 ## Geolocation
 
-```
+```csharp
 var geo = new GeolocationService {
     DesiredAccuracy = 50 // 50 meters
 };
@@ -18,7 +18,7 @@ if (geo.IsSupported && geo.IsEnabled) {
 
 ## Text-to-Speech
 
-```
+```csharp
 var tts = new TextToSpeechService ();
 await tts.SpeakAsync ("Hello, Monkey!");
 ```
@@ -26,7 +26,7 @@ await tts.SpeakAsync ("Hello, Monkey!");
 
 ## Permissions
 
-```
+```csharp
 var ps = new PermissionsService ();
 
 var status = await ps.CheckPermissionStatusAsync(Permission.Location);
