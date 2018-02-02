@@ -18,7 +18,10 @@ namespace Xamarin.Services.Permissions
     /// <summary>
     /// Implementation for Permissions
     /// </summary>
-    public class PermissionsService : IPermissionsService
+    public class PermissionsService
+#if DEBUG
+        : IPermissionsService
+#endif
     {
         CLLocationManager locationManager;
         ABAddressBook addressBook;

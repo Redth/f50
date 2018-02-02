@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Interfaces
 {
+#if DEBUG
     public interface ITextToSpeechService : IDisposable
     {
         /// <summary>
@@ -32,4 +33,5 @@ namespace Xamarin.Services.Interfaces
         /// </summary>
         int MaxSpeechInputLength { get; }
     }
+#endif
 }

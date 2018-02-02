@@ -9,7 +9,10 @@ using Xamarin.Services;
 
 namespace Xamarin.Services.TextToSpeech
 {
-    public class TextToSpeechService : Interfaces.ITextToSpeechService
+    public class TextToSpeechService
+#if DEBUG
+        : Interfaces.ITextToSpeechService
+#endif
     {
         readonly AVSpeechSynthesizer speechSynthesizer;
         readonly SemaphoreSlim semaphore;

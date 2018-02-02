@@ -17,8 +17,11 @@ namespace Xamarin.Services.Geolocation
     /// <summary>
     /// Implementation for Geolocator
     /// </summary>
-    [Preserve(AllMembers = true)]
-    public class GeolocationService : IGeolocationService
+    [Preserve (AllMembers = true)]
+    public class GeolocationService
+#if DEBUG
+        : IGeolocationService
+#endif
     {
         bool deferringUpdates;
         readonly CLLocationManager manager;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Geolocation
 {
+#if DEBUG
     /// <summary>
     /// Interface for GeolocationService
     /// </summary>
@@ -95,4 +96,5 @@ namespace Xamarin.Services.Geolocation
         /// <returns>If successfully stopped</returns>
         Task<bool> StopListeningAsync();
     }
+#endif
 }

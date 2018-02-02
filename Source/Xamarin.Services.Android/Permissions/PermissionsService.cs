@@ -14,7 +14,10 @@ namespace Xamarin.Services.Permissions
     /// <summary>
     /// Implementation for Feature
     /// </summary>
-    public class PermissionsService : IPermissionsService
+    public class PermissionsService
+#if DEBUG
+        : IPermissionsService
+#endif
     {
 
         object locker = new object();

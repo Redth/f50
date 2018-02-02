@@ -12,7 +12,10 @@ namespace Xamarin.Services.TextToSpeech
     /// <summary>
     /// Text to speech implementation Android
     /// </summary>
-    public class TextToSpeechService : Java.Lang.Object, Interfaces.ITextToSpeechService, global::Android.Speech.Tts.TextToSpeech.IOnInitListener, IDisposable
+    public class TextToSpeechService : Java.Lang.Object, global::Android.Speech.Tts.TextToSpeech.IOnInitListener, IDisposable
+#if DEBUG
+    , Interfaces.ITextToSpeechService
+#endif
     {
         const int DefaultMaxSpeechLength = 4000;
         readonly SemaphoreSlim semaphore = new SemaphoreSlim (1, 1);

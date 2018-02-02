@@ -13,12 +13,15 @@ using Android.Runtime;
 
 namespace Xamarin.Services.Geolocation
 {
-	/// <summary>
-	/// Implementation for Feature
-	/// </summary>
-	[Preserve(AllMembers = true)]
-	public class GeolocationService : IGeolocationService
-	{
+    /// <summary>
+    /// Implementation for Feature
+    /// </summary>
+    [Preserve (AllMembers = true)]
+    public class GeolocationService
+#if DEBUG
+        : IGeolocationService
+#endif
+    {
 		string[] allProviders;
 		LocationManager locationManager;
 

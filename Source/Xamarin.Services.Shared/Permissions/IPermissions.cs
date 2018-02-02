@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Permissions
 {
+#if DEBUG
     /// <summary>
     /// Interface for Permissions
     /// </summary>
@@ -37,4 +38,5 @@ namespace Xamarin.Services.Permissions
         /// <returns>true if success, else false and not supported</returns>
         bool OpenAppSettings();
     }
+#endif
 }
