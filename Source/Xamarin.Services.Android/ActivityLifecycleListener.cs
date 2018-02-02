@@ -6,10 +6,6 @@ namespace Xamarin.Services
 {
     internal class ActivityLifecycleContextListener : Java.Lang.Object, Application.IActivityLifecycleCallbacks
     {
-        public ActivityLifecycleContextListener ()
-        {
-        }
-
         Activity currentActivity = null;
 
         public Context Context {
