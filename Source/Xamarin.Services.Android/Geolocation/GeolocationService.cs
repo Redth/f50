@@ -80,15 +80,15 @@ namespace Xamarin.Services.Geolocation
 		}
 
 		/// <inheritdoc/>
-		public bool SupportsHeading => true;
+		public bool IsHeadingSupported => true;
 
 
 		/// <inheritdoc/>
-		public bool IsGeolocationAvailable => Providers.Length > 0;
+		public bool IsSupported => Providers.Length > 0;
 
 
 		/// <inheritdoc/>
-		public bool IsGeolocationEnabled => Providers.Any(p => !IgnoredProviders.Contains(p) &&
+		public bool IsEnabled => Providers.Any(p => !IgnoredProviders.Contains(p) &&
 			Manager.IsProviderEnabled(p));
 
 

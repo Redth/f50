@@ -34,17 +34,17 @@ namespace Xamarin.Services.Geolocation
         /// <summary>
         /// Gets if device supports heading
         /// </summary>
-        bool SupportsHeading { get; }
+        bool IsHeadingSupported { get; }
 
         /// <summary>
         /// Gets if geolocation is available on device
         /// </summary>
-        bool IsGeolocationAvailable { get; }
+        bool IsSupported { get; }
 
         /// <summary>
         /// Gets if geolocation is enabled on device
         /// </summary>
-        bool IsGeolocationEnabled { get; }
+        bool IsEnabled { get; }
 
 
 
