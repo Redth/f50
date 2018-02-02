@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Xamarin.Services</AssemblyName>
+    <RootNamespace>Xamarin.Services</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems" Label="Shared" />
+
+</Project>

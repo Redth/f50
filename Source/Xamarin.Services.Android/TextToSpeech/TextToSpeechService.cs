@@ -14,7 +14,7 @@ namespace Xamarin.Services.TextToSpeech
     /// </summary>
     public class TextToSpeechService : Java.Lang.Object, global::Android.Speech.Tts.TextToSpeech.IOnInitListener, IDisposable
 #if DEBUG
-    , Interfaces.ITextToSpeechService
+    , ITextToSpeechService
 #endif
     {
         const int DefaultMaxSpeechLength = 4000;
