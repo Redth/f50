@@ -69,7 +69,7 @@
     <Compile Include="Geolocation\GeolocationSingleListener.cs" />
     <Compile Include="Geolocation\GeolocationUtils.cs" />
     <Compile Include="Permissions\PermissionsService.cs" />
-    <Compile Include="TextToSpeech\TextToSpeech.cs" />
+    <Compile Include="TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

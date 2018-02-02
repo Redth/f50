@@ -57,7 +57,7 @@
     <Compile Include="Geolocation\GeolocationSingleUpdateDelegate.cs" />
     <Compile Include="Geolocation\GeolocationUtils.cs" />
     <Compile Include="Permissions\PermissionsService.cs" />
-    <Compile Include="TextToSpeech\TextToSpeech.cs" />
+    <Compile Include="TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <Import Project="..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems" Label="Shared" Condition="Exists('..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
