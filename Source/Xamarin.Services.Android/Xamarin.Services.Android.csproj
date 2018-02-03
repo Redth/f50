@@ -42,12 +42,8 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Android.Arch.Core.Common" Version="1.0.0" />
-    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.Common" Version="1.0.1" />
-    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.Runtime" Version="1.0.0" />
-    <PackageReference Include="Xamarin.Android.Support.Annotations" Version="26.1.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.Compat" Version="26.1.0.1" />
-    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="26.1.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="25.4.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.designer.cs" />
