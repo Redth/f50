@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Permissions
 {
-#if DEBUG
+#if !EXCLUDE_INTERFACES
     /// <summary>
     /// Interface for Permissions
     /// </summary>

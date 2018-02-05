@@ -13,7 +13,7 @@ namespace Xamarin.Services.TextToSpeech
     /// Text to speech implementation Android
     /// </summary>
     public class TextToSpeechService : Java.Lang.Object, global::Android.Speech.Tts.TextToSpeech.IOnInitListener, IDisposable
-#if DEBUG
+#if !EXCLUDE_INTERFACES
     , ITextToSpeechService
 #endif
     {

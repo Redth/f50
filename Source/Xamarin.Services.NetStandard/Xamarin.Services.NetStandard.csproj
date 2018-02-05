@@ -6,6 +6,10 @@
     <RootNamespace>Xamarin.Services</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD2_0;EXCLUDE_INTERFACES</DefineConstants>
+  </PropertyGroup>
   <Import Project="..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems" Label="Shared" />
 
 </Project>

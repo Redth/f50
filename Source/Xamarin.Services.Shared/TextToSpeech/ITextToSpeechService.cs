@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services
 {
-#if DEBUG
+#if !EXCLUDE_INTERFACES
     public interface ITextToSpeechService : IDisposable
     {
         /// <summary>

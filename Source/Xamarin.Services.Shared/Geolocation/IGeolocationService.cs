@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Geolocation
 {
-#if DEBUG
+#if !EXCLUDE_INTERFACES
     /// <summary>
     /// Interface for GeolocationService
     /// </summary>

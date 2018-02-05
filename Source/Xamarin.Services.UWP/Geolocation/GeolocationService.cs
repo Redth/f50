@@ -13,7 +13,7 @@ namespace Xamarin.Services.Geolocation
     /// Implementation for Geolocator
     /// </summary>
     public class GeolocationService
-#if DEBUG
+#if !EXCLUDE_INTERFACES
         : IGeolocationService
 #endif
     {

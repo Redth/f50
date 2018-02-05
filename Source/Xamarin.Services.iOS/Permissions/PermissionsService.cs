@@ -19,7 +19,7 @@ namespace Xamarin.Services.Permissions
     /// Implementation for Permissions
     /// </summary>
     public class PermissionsService
-#if DEBUG
+#if !EXCLUDE_INTERFACES
         : IPermissionsService
 #endif
     {
@@ -323,7 +323,6 @@ namespace Xamarin.Services.Permissions
                     throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
 
             }
-
 
             return tcs.Task;
         }

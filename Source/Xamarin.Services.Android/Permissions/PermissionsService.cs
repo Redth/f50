@@ -15,7 +15,7 @@ namespace Xamarin.Services.Permissions
     /// Implementation for Feature
     /// </summary>
     public class PermissionsService
-#if DEBUG
+#if !EXCLUDE_INTERFACES
         : IPermissionsService
 #endif
     {

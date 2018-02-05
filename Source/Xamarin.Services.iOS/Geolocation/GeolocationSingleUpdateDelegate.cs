@@ -11,8 +11,6 @@ namespace Xamarin.Services.Geolocation
     [Preserve(AllMembers = true)]
     internal class GeolocationSingleUpdateDelegate : CLLocationManagerDelegate
     {
-
-
         bool haveHeading;
         bool haveLocation;
         readonly Position position = new Position();

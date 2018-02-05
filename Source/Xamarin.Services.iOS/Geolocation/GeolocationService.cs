@@ -19,7 +19,7 @@ namespace Xamarin.Services.Geolocation
     /// </summary>
     [Preserve (AllMembers = true)]
     public class GeolocationService
-#if DEBUG
+#if !EXCLUDE_INTERFACES
         : IGeolocationService
 #endif
     {

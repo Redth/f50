@@ -10,7 +10,7 @@ using Xamarin.Services;
 namespace Xamarin.Services.TextToSpeech
 {
     public class TextToSpeechService
-#if DEBUG
+#if !EXCLUDE_INTERFACES
         : ITextToSpeechService
 #endif
     {
