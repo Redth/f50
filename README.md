@@ -15,6 +15,7 @@ There are a number of discussion points and ideas that remain to be resolved and
  - We should check to ensure developers have the appropriate permissions declared in their platform app configurations and throw a _useful_ exception when they do not:
    - iOS apps sometimes need entries in the Info.plist describing the intent behind using the functionality
    - Android apps need permissions defined in the AndroidManifest.xml
+ - Linking: Some plugin code currently uses `[Preserve]` to get around necessary classes being linked out, which we want to be more clever about since we _want_ as much as possible to be linked out of the build
 
 ## Geolocation
 
