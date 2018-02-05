@@ -8,7 +8,6 @@ using Android.Runtime;
 
 namespace Xamarin.Services.Geolocation
 {
-    [Preserve(AllMembers = true)]
     internal class GeolocationSingleListener
        : Java.Lang.Object, ILocationListener
     {

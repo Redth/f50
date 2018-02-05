@@ -16,7 +16,6 @@ namespace Xamarin.Services.Geolocation
     /// <summary>
     /// Implementation for Feature
     /// </summary>
-    [Preserve (AllMembers = true)]
     public class GeolocationService
 #if !EXCLUDE_INTERFACES
         : IGeolocationService

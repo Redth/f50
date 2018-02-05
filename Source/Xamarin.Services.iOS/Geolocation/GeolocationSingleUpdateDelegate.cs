@@ -8,7 +8,6 @@ using System.Linq;
 
 namespace Xamarin.Services.Geolocation
 {
-    [Preserve(AllMembers = true)]
     internal class GeolocationSingleUpdateDelegate : CLLocationManagerDelegate
     {
         bool haveHeading;
