@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Xamarin.Services</id>
+    <version>1.0.0</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>A huge collection of APIs that do many cool things.</description>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <dependencies>
+      <group targetFramework="MonoAndroid">
+        <dependency id="Xamarin.Android.Support.Compat" version="25.4.0.2"/>
+        <dependency id="Xamarin.Android.Support.Core.Utils" version="25.4.0.2"/>
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+
+    <!-- Android -->
+    <file src="Output/Xamarin.Services.Android/Xamarin.Services.dll" target="lib/MonoAndroid" />
+    
+    <!-- iOS -->
+    <file src="Output/Xamarin.Services.iOS/Xamarin.Services.dll" target="lib/Xamarin.iOS" />
+    
+    <!-- UWP -->
+    <file src="Output/Xamarin.Services.UWP/Xamarin.Services.dll" target="lib/uap10.0" />
+    <file src="Output/Xamarin.Services.UWP/Xamarin.Services.pri" target="lib/uap10.0" />
+
+    <!-- .NET Standard -->
+    <file src="Output/Xamarin.Services.NetStandard/Xamarin.Services.dll" target="lib/netstandard2.0" />
+
+  </files>
+</package>

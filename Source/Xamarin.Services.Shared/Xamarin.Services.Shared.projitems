@@ -20,4 +20,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\ITextToSpeechService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\Locale.cs" />
   </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\Xamarin.Services.Build.targets" />
 </Project>

@@ -11,7 +11,7 @@ namespace Xamarin.Services.TextToSpeech
 {
     public class TextToSpeechService
 #if DEBUG
-        : Interfaces.ITextToSpeechService
+        : ITextToSpeechService
 #endif
     {
         readonly AVSpeechSynthesizer speechSynthesizer;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Xamarin.Services.Interfaces
+namespace Xamarin.Services
 {
 #if DEBUG
     public interface ITextToSpeechService : IDisposable
