@@ -6,6 +6,7 @@ Much of this code is ported from existing plugins, and has not been refactored t
 
 There are a number of discussion points and ideas that remain to be resolved and implemented:
 
+ - What platforms should be supported?  Should we support _some_ platforms in some functionality when we can, or should we only support a platform if all features can be reasonably well implemented on it?
  - We think that one assembly, one nuget package is ideal, but we need to discuss any outstanding issues with this approach:
    - We can't (easily) automatically and _conditionally_ define permissions for features like Location on Android
  - How do we ensure the managed linker strips out everything that is irrelevant to the app consuming the library?
