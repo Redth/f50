@@ -9,9 +9,9 @@ There are a number of discussion points and ideas that remain to be resolved and
  - What platforms should be supported?  Should we support _some_ platforms in some functionality when we can, or should we only support a platform if all features can be reasonably well implemented on it?
  - We think that one assembly, one nuget package is ideal, but we need to discuss any outstanding issues with this approach:
    - We can't (easily) automatically and _conditionally_ define permissions for features like Location on Android
+   - What's the impact to developers if we take dependencies on other libraries (eg: Google Play Services - Location) which are only used by small parts of the overall library
  - How do we ensure the managed linker strips out everything that is irrelevant to the app consuming the library?
    - We need to ensure that compiled apps don't link against frameworks they aren't actually using (for example, on iOS, apps may be rejected for linking against Location services, but not specifying the appropriate permissions in the Info.plist)
- - What's the impact to developers if we take dependencies on other libraries (eg: Google Play Services - Location) which are only used by small parts of the overall library
  - We should check to ensure developers have the appropriate permissions declared in their platform app configurations and throw a _useful_ exception when they do not:
    - iOS apps sometimes need entries in the Info.plist describing the intent behind using the functionality
    - Android apps need permissions defined in the AndroidManifest.xml
