@@ -16,6 +16,8 @@ There are a number of discussion points and ideas that remain to be resolved and
    - iOS apps sometimes need entries in the Info.plist describing the intent behind using the functionality
    - Android apps need permissions defined in the AndroidManifest.xml
  - Linking: Some plugin code currently uses `[Preserve]` to get around necessary classes being linked out, which we want to be more clever about since we _want_ as much as possible to be linked out of the build
+ - Discuss the merits of a consistent `IsAvailable` and `IsEnabled` set of properties or methods on each service class
+ - Premissions API needs restructuing - should it know about all of the permission types? Or should each set of API's with specific functionality know about these and deal with them behind the scenes.  We may want a consistent API here with things like `HasPermission()` and `RequestPermission()` calls for any feature requiring permissions.
 
 ## Geolocation
 
