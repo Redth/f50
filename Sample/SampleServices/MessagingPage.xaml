@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleServices.MessagingPage"
+             Title="Messaging">
+
+    <ContentPage Title="Email" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter a recipient" x:Name="emailTo" Keyboard="Email" />
+            <Entry Placeholder="Enter a subject" x:Name="emailSubject" />
+            <Entry Placeholder="Enter a message body" x:Name="emailMessage" VerticalOptions="FillAndExpand" />
+            <Button Text="Send Email" Clicked="SendEmail_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="SMS" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter a mobile number" x:Name="smsTo" Keyboard="Telephone" />
+            <Entry Placeholder="Enter a message body" x:Name="smsMessage" VerticalOptions="FillAndExpand" />
+            <Button Text="Send SMS" Clicked="SendSms_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Phone" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter a telephone number" x:Name="telNumber" Keyboard="Telephone" />
+            <Button Text="Make Call" Clicked="CallTel_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+</TabbedPage>

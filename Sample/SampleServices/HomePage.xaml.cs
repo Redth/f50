@@ -22,20 +22,19 @@ namespace SampleServices
 				new SampleItem(
 					"Settings", typeof(SettingsPage),
 					"Demonstrates how easy it is to read and save app settings."),
+				new SampleItem(
+					"Messaging", typeof(MessagingPage),
+					"Demonstrates how easy it is to send messages."),
 			};
 		}
 
 		private async void OnSampleSelected(object sender, SelectedItemChangedEventArgs e)
 		{
-			var item = e.SelectedItem as SampleItem;
-
-			if (item == null)
-				return;
-
-			var page = Activator.CreateInstance(item.SamplePage) as Page;
-
-			if (page != null)
-				await Navigation.PushAsync(page);
+			if (e.SelectedItem is SampleItem item)
+			{
+				if (Activator.CreateInstance(item.SamplePage) is Page page)
+					await Navigation.PushAsync(page);
+			}
 
 			samples.SelectedItem = null;
 		}
