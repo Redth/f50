@@ -11,19 +11,24 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectionType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityTypeChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\IConnectivityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ActivityType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Address.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\GeolocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\IGeolocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ListenerSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Util.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Permissions\IPermissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionEnums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\ISettingsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\ITextToSpeechService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\Locale.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\Xamarin.Services.Build.targets" />
 </Project>

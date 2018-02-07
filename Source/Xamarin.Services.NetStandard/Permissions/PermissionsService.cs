@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Permissions
 {
-	public class PermissionsService
-#if !EXCLUDE_INTERFACES
-		: IPermissionsService
-#endif
+	public partial class PermissionsService
 	{
 		public PermissionsService() => throw new NotImplementedException();
 
@@ -15,7 +12,7 @@ namespace Xamarin.Services.Permissions
 
 		public Task<PermissionStatus> CheckPermissionStatusAsync(Permission permission) => throw new NotImplementedException();
 
-		public async Task<Dictionary<Permission, PermissionStatus>> RequestPermissionsAsync(params Permission[] permissions) => throw new NotImplementedException();
+		public Task<Dictionary<Permission, PermissionStatus>> RequestPermissionsAsync(params Permission[] permissions) => throw new NotImplementedException();
 
 		public bool OpenAppSettings() => throw new NotImplementedException();
 	}

@@ -5,17 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using AVFoundation;
 using UIKit;
-using Xamarin.Services;
 
 namespace Xamarin.Services.TextToSpeech
 {
-	public class TextToSpeechService
-#if !EXCLUDE_INTERFACES
-		: ITextToSpeechService
-#endif
+	public partial class TextToSpeechService
 	{
-		readonly AVSpeechSynthesizer speechSynthesizer;
-		readonly SemaphoreSlim semaphore;
+		private readonly AVSpeechSynthesizer speechSynthesizer;
+		private readonly SemaphoreSlim semaphore;
+		private TaskCompletionSource<object> currentSpeak;
 
 		public TextToSpeechService()
 		{
@@ -45,6 +42,8 @@ namespace Xamarin.Services.TextToSpeech
 			Task.FromResult(AVSpeechSynthesisVoice.GetSpeechVoices()
 			  .OrderBy(a => a.Language)
 			  .Select(a => new Locale { Language = a.Language, DisplayName = a.Language }));
+
+		public int MaxSpeechInputLength => -1;
 
 		private AVSpeechUtterance GetSpeechUtterance(string text, Locale? locale, float? pitch, float? speakRate, float? volume)
 		{
@@ -119,8 +118,7 @@ namespace Xamarin.Services.TextToSpeech
 		private static float? NormalizePitch(float? pitch) =>
 			pitch.GetValueOrDefault(1.0f);
 
-		TaskCompletionSource<object> currentSpeak;
-		async Task SpeakUtterance(AVSpeechUtterance speechUtterance, CancellationToken cancelToken)
+		private async Task SpeakUtterance(AVSpeechUtterance speechUtterance, CancellationToken cancelToken)
 		{
 			try
 			{
@@ -139,17 +137,21 @@ namespace Xamarin.Services.TextToSpeech
 			}
 		}
 
-		void OnFinishedSpeechUtterance(object sender, AVSpeechSynthesizerUteranceEventArgs args) =>
+		private void OnFinishedSpeechUtterance(object sender, AVSpeechSynthesizerUteranceEventArgs args) =>
 			currentSpeak?.TrySetResult(null);
 
-		void TryCancel()
+		private void TryCancel()
 		{
 			speechSynthesizer?.StopSpeaking(AVSpeechBoundary.Word);
 			currentSpeak?.TrySetCanceled();
 		}
 
-		public int MaxSpeechInputLength => -1;
-
-		public void Dispose() => speechSynthesizer?.Dispose();
+		private void OnDispose(bool disposing)
+		{
+			if (disposing)
+			{
+				speechSynthesizer?.Dispose();
+			}
+		}
 	}
 }

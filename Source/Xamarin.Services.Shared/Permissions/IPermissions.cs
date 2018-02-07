@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Permissions
 {
-#if !EXCLUDE_INTERFACES
+#if INCLUDE_INTERFACES
 	public interface IPermissionsService
 	{
 		Task<bool> ShouldShowRequestPermissionRationaleAsync(Permission permission);

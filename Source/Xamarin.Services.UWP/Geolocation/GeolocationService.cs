@@ -9,23 +9,16 @@ using Windows.Services.Maps;
 
 namespace Xamarin.Services.Geolocation
 {
-	public class GeolocationService
-#if !EXCLUDE_INTERFACES
-		: IGeolocationService
-#endif
+	public partial class GeolocationService
 	{
-		bool isListening;
-		double desiredAccuracy;
-		Windows.Devices.Geolocation.Geolocator locator = new Windows.Devices.Geolocation.Geolocator();
+		private bool isListening;
+		private double desiredAccuracy;
+		private Geolocator locator = new Geolocator();
 
 		public GeolocationService()
 		{
 			DesiredAccuracy = 100;
 		}
-
-		public event EventHandler<PositionEventArgs> PositionChanged;
-
-		public event EventHandler<PositionErrorEventArgs> PositionError;
 
 		public bool IsHeadingSupported => false;
 
@@ -73,7 +66,6 @@ namespace Xamarin.Services.Geolocation
 
 		public bool IsListening => isListening;
 
-
 		public Task<Position> GetLastKnownLocationAsync() =>
 			Task.Factory.StartNew<Position>(() => { return null; });
 
@@ -118,19 +110,6 @@ namespace Xamarin.Services.Geolocation
 			};
 
 			return tcs.Task;
-		}
-
-		void SetMapKey(string mapKey)
-		{
-			if (string.IsNullOrWhiteSpace(mapKey) && string.IsNullOrWhiteSpace(MapService.ServiceToken))
-			{
-				System.Diagnostics.Debug.WriteLine("Map API key is required on UWP to reverse geolocate.");
-				throw new ArgumentNullException(nameof(mapKey));
-
-			}
-
-			if (!string.IsNullOrWhiteSpace(mapKey))
-				MapService.ServiceToken = mapKey;
 		}
 
 		public async Task<IEnumerable<Address>> GetAddressesForPositionAsync(Position position, string mapKey = null)
@@ -208,7 +187,20 @@ namespace Xamarin.Services.Geolocation
 			return Task.FromResult(true);
 		}
 
-		private async void OnLocatorStatusChanged(Windows.Devices.Geolocation.Geolocator sender, StatusChangedEventArgs e)
+		private void SetMapKey(string mapKey)
+		{
+			if (string.IsNullOrWhiteSpace(mapKey) && string.IsNullOrWhiteSpace(MapService.ServiceToken))
+			{
+				System.Diagnostics.Debug.WriteLine("Map API key is required on UWP to reverse geolocate.");
+				throw new ArgumentNullException(nameof(mapKey));
+
+			}
+
+			if (!string.IsNullOrWhiteSpace(mapKey))
+				MapService.ServiceToken = mapKey;
+		}
+
+		private async void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs e)
 		{
 			GeolocationError error;
 			switch (e.Status)
@@ -234,21 +226,17 @@ namespace Xamarin.Services.Geolocation
 			locator = null;
 		}
 
-		private void OnLocatorPositionChanged(Windows.Devices.Geolocation.Geolocator sender, PositionChangedEventArgs e)
+		private void OnLocatorPositionChanged(Geolocator sender, PositionChangedEventArgs e)
 		{
 			OnPositionChanged(new PositionEventArgs(GetPosition(e.Position)));
 		}
 
-		private void OnPositionChanged(PositionEventArgs e) => PositionChanged?.Invoke(this, e);
-
-		private void OnPositionError(PositionErrorEventArgs e) => PositionError?.Invoke(this, e);
-
-		private Windows.Devices.Geolocation.Geolocator GetGeolocator()
+		private Geolocator GetGeolocator()
 		{
 			var loc = locator;
 			if (loc == null)
 			{
-				locator = new Windows.Devices.Geolocation.Geolocator();
+				locator = new Geolocator();
 				locator.StatusChanged += OnLocatorStatusChanged;
 				loc = locator;
 			}

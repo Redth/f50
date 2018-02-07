@@ -8,10 +8,7 @@ using Windows.Devices.Geolocation;
 
 namespace Xamarin.Services.Permissions
 {
-	public class PermissionsService
-#if !EXCLUDE_INTERFACES
-		: IPermissionsService
-#endif
+	public partial class PermissionsService
 	{
 		Guid ActivitySensorClassId = new Guid("9D9E0118-1807-4F2E-96E4-2CE57142E196");
 

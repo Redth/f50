@@ -9,57 +9,17 @@ using System.Linq;
 
 namespace Xamarin.Services.Connectivity
 {
-	[Foundation.Preserve(AllMembers = true)]
-	public class ConnectivityService
-#if !EXCLUDE_INTERFACES
-		: IConnectivityService
-#endif
+	public partial class ConnectivityService
 	{
-		Task initialTask = null;
+		private Task initialTask;
+		private bool isConnected;
+		private NetworkStatus previousInternetStatus = NetworkStatus.NotReachable;
 
 		public ConnectivityService()
 		{
 			//start an update on the background.
 			initialTask = Task.Run(() => { UpdateConnected(false); });
 			Reachability.ReachabilityChanged += ReachabilityChanged;
-		}
-
-		async void ReachabilityChanged(object sender, EventArgs e)
-		{
-			//Add in artifical delay so the connection status has time to change
-			//else it will return true no matter what.
-			await Task.Delay(100);
-			UpdateConnected();
-		}
-
-		protected virtual void OnConnectivityChanged(ConnectivityChangedEventArgs e) =>
-			ConnectivityChanged?.Invoke(this, e);
-
-		protected virtual void OnConnectivityTypeChanged(ConnectivityTypeChangedEventArgs e) =>
-			ConnectivityTypeChanged?.Invoke(this, e);
-
-		private bool isConnected;
-		private NetworkStatus previousInternetStatus = NetworkStatus.NotReachable;
-		private void UpdateConnected(bool triggerChange = true)
-		{
-			var remoteHostStatus = Reachability.RemoteHostStatus();
-			var internetStatus = Reachability.InternetConnectionStatus();
-
-			var previouslyConnected = isConnected;
-			isConnected = (internetStatus == NetworkStatus.ReachableViaCarrierDataNetwork ||
-							internetStatus == NetworkStatus.ReachableViaWiFiNetwork) ||
-						  (remoteHostStatus == NetworkStatus.ReachableViaCarrierDataNetwork ||
-							remoteHostStatus == NetworkStatus.ReachableViaWiFiNetwork);
-
-			if (triggerChange)
-			{
-				if (previouslyConnected != isConnected || previousInternetStatus != internetStatus)
-					OnConnectivityChanged(new ConnectivityChangedEventArgs { IsConnected = isConnected });
-
-				var connectionTypes = this.ConnectionTypes.ToArray();
-				OnConnectivityTypeChanged(new ConnectivityTypeChangedEventArgs { IsConnected = isConnected, ConnectionTypes = connectionTypes });
-			}
-			previousInternetStatus = internetStatus;
 		}
 
 		public virtual bool IsConnected
@@ -102,7 +62,6 @@ namespace Xamarin.Services.Connectivity
 					Replace("https://www.", string.Empty).
 					Replace("https://", string.Empty).
 					TrimEnd('/');
-
 
 			return await Task.Run(() =>
 			{
@@ -163,39 +122,45 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		public virtual IEnumerable<UInt64> Bandwidths
+		public virtual IEnumerable<UInt64> Bandwidths => new UInt64[] { };
+
+		private async void ReachabilityChanged(object sender, EventArgs e)
 		{
-			get { return new UInt64[] { }; }
+			//Add in artifical delay so the connection status has time to change
+			//else it will return true no matter what.
+			await Task.Delay(100);
+			UpdateConnected();
 		}
 
-		private bool disposed = false;
-
-		public event ConnectivityChangedEventHandler ConnectivityChanged;
-		public event ConnectivityTypeChangedEventHandler ConnectivityTypeChanged;
-
-		public virtual void Dispose(bool disposing)
+		private void UpdateConnected(bool triggerChange = true)
 		{
-			if (!disposed)
+			var remoteHostStatus = Reachability.RemoteHostStatus();
+			var internetStatus = Reachability.InternetConnectionStatus();
+
+			var previouslyConnected = isConnected;
+			isConnected = (internetStatus == NetworkStatus.ReachableViaCarrierDataNetwork ||
+							internetStatus == NetworkStatus.ReachableViaWiFiNetwork) ||
+						  (remoteHostStatus == NetworkStatus.ReachableViaCarrierDataNetwork ||
+							remoteHostStatus == NetworkStatus.ReachableViaWiFiNetwork);
+
+			if (triggerChange)
 			{
-				if (disposing)
-				{
-					Reachability.ReachabilityChanged -= ReachabilityChanged;
-					Reachability.Dispose();
-				}
+				if (previouslyConnected != isConnected || previousInternetStatus != internetStatus)
+					OnConnectivityChanged(new ConnectivityChangedEventArgs { IsConnected = isConnected });
 
-				disposed = true;
+				var connectionTypes = this.ConnectionTypes.ToArray();
+				OnConnectivityTypeChanged(new ConnectivityTypeChangedEventArgs { IsConnected = isConnected, ConnectionTypes = connectionTypes });
 			}
+			previousInternetStatus = internetStatus;
 		}
 
-		public void Dispose()
+		private void OnDispose(bool disposing)
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~ConnectivityService()
-		{
-			Dispose(false);
+			if (disposing)
+			{
+				Reachability.ReachabilityChanged -= ReachabilityChanged;
+				Reachability.Dispose();
+			}
 		}
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace Xamarin.Services.Settings
 {
+#if INCLUDE_INTERFACES
 	public interface ISettingsService
 	{
 		Decimal GetValueOrDefault(string key, Decimal defaultValue, string fileName = null);
@@ -48,4 +49,5 @@ namespace Xamarin.Services.Settings
 
 		bool OpenAppSettings();
 	}
+#endif
 }

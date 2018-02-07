@@ -11,24 +11,13 @@ using Java.Net;
 
 namespace Xamarin.Services.Connectivity
 {
-	public class ConnectivityService
-#if !EXCLUDE_INTERFACES
-		: IConnectivityService
-#endif
+	public partial class ConnectivityService
 	{
 		private ConnectivityChangeBroadcastReceiver receiver;
 		private ConnectivityManager connectivityManager;
 		private WifiManager wifiManager;
 
-		public ConnectivityService()
-		{
-			ConnectivityChangeBroadcastReceiver.ConnectionChanged = OnConnectivityChanged;
-			ConnectivityChangeBroadcastReceiver.ConnectionTypeChanged = OnConnectivityTypeChanged;
-			receiver = new ConnectivityChangeBroadcastReceiver();
-			Application.Context.RegisterReceiver(receiver, new IntentFilter(ConnectivityManager.ConnectivityAction));
-		}
-
-		ConnectivityManager ConnectivityManager
+		private ConnectivityManager ConnectivityManager
 		{
 			get
 			{
@@ -39,7 +28,7 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		WifiManager WifiManager
+		private WifiManager WifiManager
 		{
 			get
 			{
@@ -50,8 +39,15 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		public bool IsConnected => ConnectivityManager.GetIsConnected();
+		public ConnectivityService()
+		{
+			ConnectivityChangeBroadcastReceiver.ConnectionChanged = OnConnectivityChanged;
+			ConnectivityChangeBroadcastReceiver.ConnectionTypeChanged = OnConnectivityTypeChanged;
+			receiver = new ConnectivityChangeBroadcastReceiver();
+			Application.Context.RegisterReceiver(receiver, new IntentFilter(ConnectivityManager.ConnectivityAction));
+		}
 
+		public bool IsConnected => ConnectivityManager.GetIsConnected();
 
 		public async Task<bool> IsReachable(string host, int msTimeout = 5000)
 		{
@@ -162,53 +158,26 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		protected virtual void OnConnectivityChanged(ConnectivityChangedEventArgs e) =>
-			ConnectivityChanged?.Invoke(this, e);
-
-		protected virtual void OnConnectivityTypeChanged(ConnectivityTypeChangedEventArgs e) =>
-			ConnectivityTypeChanged?.Invoke(this, e);
-
-		private bool disposed = false;
-
-		public event ConnectivityChangedEventHandler ConnectivityChanged;
-		public event ConnectivityTypeChangedEventHandler ConnectivityTypeChanged;
-
-		public virtual void Dispose(bool disposing)
+		private void OnDispose(bool disposing)
 		{
-			if (!disposed)
+			if (disposing)
 			{
-				if (disposing)
+				if (receiver != null)
+					Application.Context.UnregisterReceiver(receiver);
+
+				ConnectivityChangeBroadcastReceiver.ConnectionChanged = null;
+				if (wifiManager != null)
 				{
-					if (receiver != null)
-						Application.Context.UnregisterReceiver(receiver);
-
-					ConnectivityChangeBroadcastReceiver.ConnectionChanged = null;
-					if (wifiManager != null)
-					{
-						wifiManager.Dispose();
-						wifiManager = null;
-					}
-
-					if (connectivityManager != null)
-					{
-						connectivityManager.Dispose();
-						connectivityManager = null;
-					}
+					wifiManager.Dispose();
+					wifiManager = null;
 				}
 
-				disposed = true;
+				if (connectivityManager != null)
+				{
+					connectivityManager.Dispose();
+					connectivityManager = null;
+				}
 			}
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~ConnectivityService()
-		{
-			Dispose(false);
 		}
 	}
 }

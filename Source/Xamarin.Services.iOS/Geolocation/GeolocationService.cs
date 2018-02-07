@@ -14,16 +14,13 @@ using AppKit;
 
 namespace Xamarin.Services.Geolocation
 {
-	public class GeolocationService
-#if !EXCLUDE_INTERFACES
-		: IGeolocationService
-#endif
+	public partial class GeolocationService
 	{
-		bool deferringUpdates;
-		readonly CLLocationManager manager;
-		bool isListening;
-		Position lastPosition;
-		ListenerSettings listenerSettings;
+		private bool deferringUpdates;
+		private readonly CLLocationManager manager;
+		private bool isListening;
+		private Position lastPosition;
+		private ListenerSettings listenerSettings;
 
 		public GeolocationService()
 		{
@@ -52,42 +49,6 @@ namespace Xamarin.Services.Geolocation
 #endif
 		}
 
-		void OnDeferredUpdatedFinished(object sender, NSErrorEventArgs e) => deferringUpdates = false;
-
-
-#if __IOS__
-		bool CanDeferLocationUpdate => CLLocationManager.DeferredLocationUpdatesAvailable && UIDevice.CurrentDevice.CheckSystemVersion(6, 0);
-#elif __MACOS__
-        bool CanDeferLocationUpdate => CLLocationManager.DeferredLocationUpdatesAvailable;
-#elif __TVOS__
-        bool CanDeferLocationUpdate => false;
-#endif
-
-#if __IOS__
-		async Task<bool> CheckPermissions(Permissions.Permission permission)
-		{
-			var status = await PermissionsService.Current.CheckPermissionStatusAsync(permission);
-			if (status != PermissionStatus.Granted)
-			{
-				Console.WriteLine("Currently does not have Location permissions, requesting permissions");
-
-				var request = await PermissionsService.Current.RequestPermissionsAsync(permission);
-
-				if (request[permission] != PermissionStatus.Granted)
-				{
-					Console.WriteLine("Location permission denied, can not get positions async.");
-					return false;
-				}
-			}
-
-			return true;
-		}
-#endif
-
-		public event EventHandler<PositionErrorEventArgs> PositionError;
-
-		public event EventHandler<PositionEventArgs> PositionChanged;
-
 		public double DesiredAccuracy { get; set; }
 
 		public bool IsListening => isListening;
@@ -107,35 +68,6 @@ namespace Xamarin.Services.Geolocation
 				var status = CLLocationManager.Status;
 				return CLLocationManager.LocationServicesEnabled;
 			}
-		}
-
-		void RequestAuthorization()
-		{
-#if __IOS__
-			var info = NSBundle.MainBundle.InfoDictionary;
-
-			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-			{
-				if (info.ContainsKey(new NSString("NSLocationAlwaysUsageDescription")))
-					manager.RequestAlwaysAuthorization();
-				else if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
-					manager.RequestWhenInUseAuthorization();
-				else
-					throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
-			}
-#elif __MACOS__
-            //nothing to do here.
-#elif __TVOS__
-            var info = NSBundle.MainBundle.InfoDictionary;
-
-            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
-                if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
-                    manager.RequestWhenInUseAuthorization();
-                else
-                    throw new UnauthorizedAccessException("On tvOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
-            }
-#endif
 		}
 
 		public async Task<Position> GetLastKnownLocationAsync()
@@ -422,7 +354,36 @@ namespace Xamarin.Services.Geolocation
 			return Task.FromResult(true);
 		}
 
-		CLLocationManager GetManager()
+		private void RequestAuthorization()
+		{
+#if __IOS__
+			var info = NSBundle.MainBundle.InfoDictionary;
+
+			if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+			{
+				if (info.ContainsKey(new NSString("NSLocationAlwaysUsageDescription")))
+					manager.RequestAlwaysAuthorization();
+				else if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
+					manager.RequestWhenInUseAuthorization();
+				else
+					throw new UnauthorizedAccessException("On iOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription or NSLocationAlwaysUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
+			}
+#elif __MACOS__
+            //nothing to do here.
+#elif __TVOS__
+            var info = NSBundle.MainBundle.InfoDictionary;
+
+            if (UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+            {
+                if (info.ContainsKey(new NSString("NSLocationWhenInUseUsageDescription")))
+                    manager.RequestWhenInUseAuthorization();
+                else
+                    throw new UnauthorizedAccessException("On tvOS 8.0 and higher you must set either NSLocationWhenInUseUsageDescription in your Info.plist file to enable Authorization Requests for Location updates!");
+            }
+#endif
+		}
+
+		private CLLocationManager GetManager()
 		{
 			CLLocationManager m = null;
 			new NSObject().InvokeOnMainThread(() => m = new CLLocationManager());
@@ -430,7 +391,7 @@ namespace Xamarin.Services.Geolocation
 		}
 
 #if __IOS__
-		void OnUpdatedHeading(object sender, CLHeadingUpdatedEventArgs e)
+		private void OnUpdatedHeading(object sender, CLHeadingUpdatedEventArgs e)
 		{
 			if (e.NewHeading.TrueHeading == -1)
 				return;
@@ -445,7 +406,7 @@ namespace Xamarin.Services.Geolocation
 		}
 #endif
 
-		void OnLocationsUpdated(object sender, CLLocationsUpdatedEventArgs e)
+		private void OnLocationsUpdated(object sender, CLLocationsUpdatedEventArgs e)
 		{
 			foreach (var location in e.Locations)
 				UpdatePosition(location);
@@ -463,11 +424,10 @@ namespace Xamarin.Services.Geolocation
 		}
 
 #if __IOS__ || __MACOS__
-		void OnUpdatedLocation(object sender, CLLocationUpdatedEventArgs e) => UpdatePosition(e.NewLocation);
+		private void OnUpdatedLocation(object sender, CLLocationUpdatedEventArgs e) => UpdatePosition(e.NewLocation);
 #endif
 
-
-		void UpdatePosition(CLLocation location)
+		private void UpdatePosition(CLLocation location)
 		{
 			var p = (lastPosition == null) ? new Position() : new Position(this.lastPosition);
 
@@ -507,26 +467,53 @@ namespace Xamarin.Services.Geolocation
 			location.Dispose();
 		}
 
-		void OnPositionChanged(PositionEventArgs e) => PositionChanged?.Invoke(this, e);
-
-		async void OnPositionError(PositionErrorEventArgs e)
-		{
-			await StopListeningAsync();
-			PositionError?.Invoke(this, e);
-		}
-
-		void OnFailed(object sender, NSErrorEventArgs e)
+		private async void OnFailed(object sender, NSErrorEventArgs e)
 		{
 			if ((CLError)(int)e.Error.Code == CLError.Network)
+			{
+				await StopListeningAsync();
 				OnPositionError(new PositionErrorEventArgs(GeolocationError.PositionUnavailable));
+			}
 		}
 
-		void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
+		private async void OnAuthorizationChanged(object sender, CLAuthorizationChangedEventArgs e)
 		{
 			if (e.Status == CLAuthorizationStatus.Denied || e.Status == CLAuthorizationStatus.Restricted)
+			{
+				await StopListeningAsync();
 				OnPositionError(new PositionErrorEventArgs(GeolocationError.Unauthorized));
+			}
 		}
 
+		private void OnDeferredUpdatedFinished(object sender, NSErrorEventArgs e) => deferringUpdates = false;
 
+#if __IOS__
+		private bool CanDeferLocationUpdate => CLLocationManager.DeferredLocationUpdatesAvailable && UIDevice.CurrentDevice.CheckSystemVersion(6, 0);
+#elif __MACOS__
+		private bool CanDeferLocationUpdate => CLLocationManager.DeferredLocationUpdatesAvailable;
+#elif __TVOS__
+		private bool CanDeferLocationUpdate => false;
+#endif
+
+#if __IOS__
+		private async Task<bool> CheckPermissions(Permissions.Permission permission)
+		{
+			var status = await PermissionsService.Current.CheckPermissionStatusAsync(permission);
+			if (status != PermissionStatus.Granted)
+			{
+				Console.WriteLine("Currently does not have Location permissions, requesting permissions");
+
+				var request = await PermissionsService.Current.RequestPermissionsAsync(permission);
+
+				if (request[permission] != PermissionStatus.Granted)
+				{
+					Console.WriteLine("Location permission denied, can not get positions async.");
+					return false;
+				}
+			}
+
+			return true;
+		}
+#endif
 	}
 }

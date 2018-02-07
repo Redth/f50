@@ -11,10 +11,7 @@ using Android.Content;
 
 namespace Xamarin.Services.Permissions
 {
-	public class PermissionsService
-#if !EXCLUDE_INTERFACES
-		: IPermissionsService
-#endif
+	public partial class PermissionsService
 	{
 		object locker = new object();
 		TaskCompletionSource<Dictionary<Permission, PermissionStatus>> tcs;

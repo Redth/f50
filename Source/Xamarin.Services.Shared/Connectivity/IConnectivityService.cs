@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Connectivity
 {
-#if !EXCLUDE_INTERFACES
-	public interface IConnectivityService : IDisposable
+#if INCLUDE_INTERFACES
+	public interface IConnectivityService
 	{
 		bool IsConnected { get; }
 

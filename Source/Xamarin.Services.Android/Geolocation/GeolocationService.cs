@@ -7,16 +7,11 @@ using Android.App;
 using Android.OS;
 using System.Linq;
 using Android.Content;
-using Android.Content.PM;
 using Xamarin.Services.Permissions;
-using Android.Runtime;
 
 namespace Xamarin.Services.Geolocation
 {
-	public class GeolocationService
-#if !EXCLUDE_INTERFACES
-		: IGeolocationService
-#endif
+	public partial class GeolocationService
 	{
 		string[] allProviders;
 		LocationManager locationManager;
@@ -49,10 +44,6 @@ namespace Xamarin.Services.Geolocation
 				return locationManager;
 			}
 		}
-
-		public event EventHandler<PositionErrorEventArgs> PositionError;
-
-		public event EventHandler<PositionEventArgs> PositionChanged;
 
 		public bool IsListening => listener != null;
 
@@ -329,8 +320,7 @@ namespace Xamarin.Services.Geolocation
 			lock (positionSync)
 			{
 				lastPosition = e.Position;
-
-				PositionChanged?.Invoke(this, e);
+				OnPositionChanged(e);
 			}
 		}
 
@@ -338,7 +328,7 @@ namespace Xamarin.Services.Geolocation
 		{
 			await StopListeningAsync();
 
-			PositionError?.Invoke(this, e);
+			OnPositionError(e);
 		}
 	}
 }

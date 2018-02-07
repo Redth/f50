@@ -7,15 +7,89 @@ using Android.Runtime;
 
 namespace Xamarin.Services.Settings
 {
-	[Preserve(AllMembers = true)]
-	public class SettingsService
-#if !EXCLUDE_INTERFACES
-		: ISettingsService
-#endif
+	public partial class SettingsService
 	{
 		private readonly object locker = new object();
 
-		T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T), string fileName = null)
+		public void Remove(string key, string fileName = null)
+		{
+			if (Application.Context == null)
+				return;
+
+			lock (locker)
+			{
+				using (var sharedPreferences = GetSharedPreference(fileName))
+				{
+					using (var sharedPreferencesEditor = sharedPreferences.Edit())
+					{
+						sharedPreferencesEditor.Remove(key);
+						sharedPreferencesEditor.Commit();
+					}
+				}
+			}
+		}
+
+		public void Clear(string fileName = null)
+		{
+			if (Application.Context == null)
+				return;
+
+			lock (locker)
+			{
+				using (var sharedPreferences = GetSharedPreference(fileName))
+				{
+					using (var sharedPreferencesEditor = sharedPreferences.Edit())
+					{
+						sharedPreferencesEditor.Clear();
+						sharedPreferencesEditor.Commit();
+					}
+				}
+			}
+		}
+
+		public bool Contains(string key, string fileName = null)
+		{
+			if (Application.Context == null)
+				return false;
+
+			lock (locker)
+			{
+				using (var sharedPreferences = GetSharedPreference(fileName))
+				{
+					if (sharedPreferences == null)
+						return false;
+
+					return sharedPreferences.Contains(key);
+				}
+			}
+		}
+
+		public bool OpenAppSettings()
+		{
+			var context = Application.Context;
+			if (context == null)
+				return false;
+
+			try
+			{
+				var settingsIntent = new Intent();
+				settingsIntent.SetAction(global::Android.Provider.Settings.ActionApplicationDetailsSettings);
+				settingsIntent.AddCategory(Intent.CategoryDefault);
+				settingsIntent.SetData(global::Android.Net.Uri.Parse("package:" + context.PackageName));
+				settingsIntent.AddFlags(ActivityFlags.NewTask);
+				settingsIntent.AddFlags(ActivityFlags.ClearTask);
+				settingsIntent.AddFlags(ActivityFlags.NoHistory);
+				settingsIntent.AddFlags(ActivityFlags.ExcludeFromRecents);
+				context.StartActivity(settingsIntent);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private T GetValueOrDefaultInternal<T>(string key, T defaultValue, string fileName)
 		{
 			if (Application.Context == null)
 				return defaultValue;
@@ -34,7 +108,7 @@ namespace Xamarin.Services.Settings
 			}
 		}
 
-		T GetValueOrDefaultCore<T>(ISharedPreferences sharedPreferences, string key, T defaultValue, string fileName)
+		private T GetValueOrDefaultCore<T>(ISharedPreferences sharedPreferences, string key, T defaultValue, string fileName)
 		{
 			Type typeOf = typeof(T);
 			if (typeOf.IsGenericType && typeOf.GetGenericTypeDefinition() == typeof(Nullable<>))
@@ -77,7 +151,7 @@ namespace Xamarin.Services.Settings
 						value = Convert.ToDecimal(savedDecimal, CultureInfo.InvariantCulture);
 
 					if (resave)
-						AddOrUpdateValueInternal(key, value);
+						AddOrUpdateValueInternal(key, value, null);
 
 					break;
 				case TypeCode.Boolean:
@@ -181,7 +255,7 @@ namespace Xamarin.Services.Settings
 			return null != value ? (T)value : defaultValue;
 		}
 
-		bool AddOrUpdateValueInternal<T>(string key, T value, string fileName = null)
+		private bool AddOrUpdateValueInternal<T>(string key, T value, string fileName)
 		{
 			if (Application.Context == null)
 				return false;
@@ -202,7 +276,7 @@ namespace Xamarin.Services.Settings
 			return AddOrUpdateValueCore(key, value, typeCode, fileName);
 		}
 
-		bool AddOrUpdateValueCore(string key, object value, TypeCode typeCode, string fileName)
+		private bool AddOrUpdateValueCore(string key, object value, TypeCode typeCode, string fileName)
 		{
 			lock (locker)
 			{
@@ -259,143 +333,11 @@ namespace Xamarin.Services.Settings
 			return true;
 		}
 
-		ISharedPreferences GetSharedPreference(string fileName)
+		private ISharedPreferences GetSharedPreference(string fileName)
 		{
 			return string.IsNullOrWhiteSpace(fileName) ?
 				PreferenceManager.GetDefaultSharedPreferences(Application.Context) :
 				Application.Context.GetSharedPreferences(fileName, FileCreationMode.Private);
-		}
-
-		public void Remove(string key, string fileName = null)
-		{
-			if (Application.Context == null)
-				return;
-
-			lock (locker)
-			{
-				using (var sharedPreferences = GetSharedPreference(fileName))
-				{
-					using (var sharedPreferencesEditor = sharedPreferences.Edit())
-					{
-						sharedPreferencesEditor.Remove(key);
-						sharedPreferencesEditor.Commit();
-					}
-				}
-			}
-		}
-
-		public void Clear(string fileName = null)
-		{
-			if (Application.Context == null)
-				return;
-
-			lock (locker)
-			{
-				using (var sharedPreferences = GetSharedPreference(fileName))
-				{
-					using (var sharedPreferencesEditor = sharedPreferences.Edit())
-					{
-						sharedPreferencesEditor.Clear();
-						sharedPreferencesEditor.Commit();
-					}
-				}
-			}
-		}
-
-		public bool Contains(string key, string fileName = null)
-		{
-			if (Application.Context == null)
-				return false;
-
-			lock (locker)
-			{
-				using (var sharedPreferences = GetSharedPreference(fileName))
-				{
-					if (sharedPreferences == null)
-						return false;
-
-					return sharedPreferences.Contains(key);
-				}
-			}
-		}
-
-		public decimal GetValueOrDefault(string key, decimal defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public bool GetValueOrDefault(string key, bool defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public long GetValueOrDefault(string key, long defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public string GetValueOrDefault(string key, string defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public int GetValueOrDefault(string key, int defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public float GetValueOrDefault(string key, float defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public DateTime GetValueOrDefault(string key, DateTime defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public Guid GetValueOrDefault(string key, Guid defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public double GetValueOrDefault(string key, double defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public bool AddOrUpdateValue(string key, decimal value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, bool value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, long value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, string value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, int value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, float value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, DateTime value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, Guid value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, double value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool OpenAppSettings()
-		{
-			var context = Application.Context;
-			if (context == null)
-				return false;
-
-			try
-			{
-				var settingsIntent = new Intent();
-				settingsIntent.SetAction(global::Android.Provider.Settings.ActionApplicationDetailsSettings);
-				settingsIntent.AddCategory(Intent.CategoryDefault);
-				settingsIntent.SetData(global::Android.Net.Uri.Parse("package:" + context.PackageName));
-				settingsIntent.AddFlags(ActivityFlags.NewTask);
-				settingsIntent.AddFlags(ActivityFlags.ClearTask);
-				settingsIntent.AddFlags(ActivityFlags.NoHistory);
-				settingsIntent.AddFlags(ActivityFlags.ExcludeFromRecents);
-				context.StartActivity(settingsIntent);
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
 		}
 	}
 }

@@ -11,10 +11,7 @@ using System.Threading;
 
 namespace Xamarin.Services.Connectivity
 {
-	public class ConnectivityService
-#if !EXCLUDE_INTERFACES
-		: IConnectivityService
-#endif
+	public partial class ConnectivityService
 	{
 		bool isConnected;
 
@@ -188,39 +185,11 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		protected virtual void OnConnectivityChanged(ConnectivityChangedEventArgs e) =>
-			ConnectivityChanged?.Invoke(this, e);
-
-		protected virtual void OnConnectivityTypeChanged(ConnectivityTypeChangedEventArgs e) =>
-			ConnectivityTypeChanged?.Invoke(this, e);
-
-		public event ConnectivityChangedEventHandler ConnectivityChanged;
-
-		public event ConnectivityTypeChangedEventHandler ConnectivityTypeChanged;
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~ConnectivityService()
-		{
-			Dispose(false);
-		}
-
-		private bool disposed = false;
-
-		public virtual void Dispose(bool disposing)
+		public virtual void OnDispose(bool disposing)
 		{
 			if (!disposed)
 			{
-				if (disposing)
-				{
-					NetworkInformation.NetworkStatusChanged -= NetworkStatusChanged;
-				}
-
-				disposed = true;
+				NetworkInformation.NetworkStatusChanged -= NetworkStatusChanged;
 			}
 		}
 	}

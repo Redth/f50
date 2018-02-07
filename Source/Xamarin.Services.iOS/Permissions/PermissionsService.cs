@@ -15,10 +15,7 @@ using MediaPlayer;
 
 namespace Xamarin.Services.Permissions
 {
-	public class PermissionsService
-#if !EXCLUDE_INTERFACES
-		: IPermissionsService
-#endif
+	public partial class PermissionsService
 	{
 		CLLocationManager locationManager;
 		ABAddressBook addressBook;

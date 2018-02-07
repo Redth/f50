@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Xamarin.Services.Geolocation
 {
-#if !EXCLUDE_INTERFACES
+#if INCLUDE_INTERFACES
 	public interface IGeolocationService
 	{
 		event EventHandler<PositionErrorEventArgs> PositionError;

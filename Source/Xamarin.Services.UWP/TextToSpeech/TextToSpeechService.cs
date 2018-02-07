@@ -10,16 +10,16 @@ using Windows.Media.SpeechSynthesis;
 
 namespace Xamarin.Services.TextToSpeech
 {
-	public class TextToSpeechService
-#if !EXCLUDE_INTERFACES
-		: ITextToSpeechService
-#endif
+	public partial class TextToSpeechService
 	{
-		readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-		SpeechSynthesizer speechSynthesizer;
+		private readonly SemaphoreSlim semaphore;
+		private SpeechSynthesizer speechSynthesizer;
 
-		public TextToSpeechService() => speechSynthesizer = new SpeechSynthesizer();
-
+		public TextToSpeechService()
+		{
+			speechSynthesizer = new SpeechSynthesizer();
+			semaphore = new SemaphoreSlim(1, 1);
+		}
 
 		public async Task SpeakAsync(string text, Locale? Locale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default(CancellationToken))
 		{
@@ -152,7 +152,13 @@ namespace Xamarin.Services.TextToSpeech
 
 		public int MaxSpeechInputLength => -1;
 
-		public void Dispose() =>
-			speechSynthesizer?.Dispose();
+		private void OnDispose(bool disposing)
+		{
+			if (disposing)
+			{
+				speechSynthesizer?.Dispose();
+				speechSynthesizer = null;
+			}
+		}
 	}
 }

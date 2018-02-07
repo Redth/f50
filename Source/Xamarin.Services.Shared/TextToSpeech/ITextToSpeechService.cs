@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Xamarin.Services.TextToSpeech
 {
-#if !EXCLUDE_INTERFACES
-	public interface ITextToSpeechService : IDisposable
+#if INCLUDE_INTERFACES
+	public interface ITextToSpeechService
 	{
 		Task SpeakAsync(string text, Locale? crossLocale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default(CancellationToken));
 

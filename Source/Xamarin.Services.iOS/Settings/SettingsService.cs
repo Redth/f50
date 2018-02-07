@@ -4,15 +4,90 @@ using UIKit;
 
 namespace Xamarin.Services.Settings
 {
-	[Preserve(AllMembers = true)]
-	public class SettingsService
-#if !EXCLUDE_INTERFACES
-		: ISettingsService
-#endif
+	public partial class SettingsService
 	{
-		readonly object locker = new object();
+		private readonly object locker = new object();
 
-		T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T), string fileName = null)
+		public void Remove(string key, string fileName = null)
+		{
+			lock (locker)
+			{
+				var defaults = GetUserDefaults(fileName);
+				try
+				{
+					if (defaults[key] != null)
+					{
+						defaults.RemoveObject(key);
+						defaults.Synchronize();
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("Unable to remove: " + key, " Message: " + ex.Message);
+				}
+			}
+		}
+
+		public void Clear(string fileName = null)
+		{
+			lock (locker)
+			{
+				var defaults = GetUserDefaults(fileName);
+				try
+				{
+					var items = defaults.ToDictionary();
+
+					foreach (var item in items.Keys)
+					{
+						if (item is NSString nsString)
+							defaults.RemoveObject(nsString);
+					}
+					defaults.Synchronize();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
+				}
+			}
+		}
+
+		public bool Contains(string key, string fileName = null)
+		{
+			lock (locker)
+			{
+				var defaults = GetUserDefaults(fileName);
+				try
+				{
+					var setting = defaults[key];
+					return setting != null;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
+				}
+
+				return false;
+			}
+		}
+
+		public bool OpenAppSettings()
+		{
+			//Opening settings only open in iOS 8+
+			if (!UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
+				return false;
+
+			try
+			{
+				UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private T GetValueOrDefaultInternal<T>(string key, T defaultValue = default(T), string fileName = null)
 		{
 			lock (locker)
 			{
@@ -104,7 +179,7 @@ namespace Xamarin.Services.Settings
 			}
 		}
 
-		bool AddOrUpdateValueInternal<T>(string key, T value, string fileName = null)
+		private bool AddOrUpdateValueInternal<T>(string key, T value, string fileName = null)
 		{
 			if (value == null)
 			{
@@ -121,7 +196,7 @@ namespace Xamarin.Services.Settings
 			return AddOrUpdateValueCore(key, value, typeCode, fileName);
 		}
 
-		bool AddOrUpdateValueCore(string key, object value, TypeCode typeCode, string fileName)
+		private bool AddOrUpdateValueCore(string key, object value, TypeCode typeCode, string fileName)
 		{
 			lock (locker)
 			{
@@ -176,146 +251,12 @@ namespace Xamarin.Services.Settings
 				}
 			}
 
-
 			return true;
 		}
 
-		public void Remove(string key, string fileName = null)
-		{
-			lock (locker)
-			{
-				var defaults = GetUserDefaults(fileName);
-				try
-				{
-					if (defaults[key] != null)
-					{
-						defaults.RemoveObject(key);
-						defaults.Synchronize();
-					}
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Unable to remove: " + key, " Message: " + ex.Message);
-				}
-			}
-		}
-
-		public void Clear(string fileName = null)
-		{
-			lock (locker)
-			{
-				var defaults = GetUserDefaults(fileName);
-				try
-				{
-					var items = defaults.ToDictionary();
-
-					foreach (var item in items.Keys)
-					{
-						if (item is NSString nsString)
-							defaults.RemoveObject(nsString);
-					}
-					defaults.Synchronize();
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
-				}
-			}
-		}
-
-		public bool Contains(string key, string fileName = null)
-		{
-			lock (locker)
-			{
-				var defaults = GetUserDefaults(fileName);
-				try
-				{
-					var setting = defaults[key];
-					return setting != null;
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine("Unable to clear all defaults. Message: " + ex.Message);
-				}
-
-				return false;
-			}
-		}
-
-		NSUserDefaults GetUserDefaults(string fileName = null) =>
+		private NSUserDefaults GetUserDefaults(string fileName = null) =>
 			string.IsNullOrWhiteSpace(fileName) ?
 			NSUserDefaults.StandardUserDefaults :
 			new NSUserDefaults(fileName, NSUserDefaultsType.SuiteName);
-
-		public decimal GetValueOrDefault(string key, decimal defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public bool GetValueOrDefault(string key, bool defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public long GetValueOrDefault(string key, long defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public string GetValueOrDefault(string key, string defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public int GetValueOrDefault(string key, int defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public float GetValueOrDefault(string key, float defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public DateTime GetValueOrDefault(string key, DateTime defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public Guid GetValueOrDefault(string key, Guid defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public double GetValueOrDefault(string key, double defaultValue, string fileName = null) =>
-			GetValueOrDefaultInternal(key, defaultValue, fileName);
-
-		public bool AddOrUpdateValue(string key, decimal value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, bool value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, long value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, string value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, int value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, float value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, DateTime value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, Guid value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool AddOrUpdateValue(string key, double value, string fileName = null) =>
-			AddOrUpdateValueInternal(key, value, fileName);
-
-		public bool OpenAppSettings()
-		{
-			//Opening settings only open in iOS 8+
-			if (!UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-				return false;
-
-			try
-			{
-				UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
 	}
 }

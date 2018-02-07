@@ -8,7 +8,6 @@ using System.Collections.Generic;
 
 namespace Xamarin.Services.Connectivity
 {
-	[Foundation.Preserve(AllMembers = true)]
 	public enum NetworkStatus
 	{
 		NotReachable,
@@ -16,7 +15,6 @@ namespace Xamarin.Services.Connectivity
 		ReachableViaWiFiNetwork
 	}
 
-	[Foundation.Preserve(AllMembers = true)]
 	public static class Reachability
 	{
 		public static string HostName = "www.google.com";
