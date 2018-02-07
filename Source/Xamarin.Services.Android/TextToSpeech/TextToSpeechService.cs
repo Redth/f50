@@ -8,17 +8,20 @@ using Android.App;
 
 namespace Xamarin.Services.TextToSpeech
 {
-	public partial class TextToSpeechService : Java.Lang.Object, global::Android.Speech.Tts.TextToSpeech.IOnInitListener
+	public partial class TextToSpeechService
 	{
 		const int DefaultMaxSpeechLength = 4000;
 		readonly SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-		global::Android.Speech.Tts.TextToSpeech textToSpeech;
+		TTSInitializer ttsInitializer;
 		string text;
 		Locale? language;
 		float pitch, speakRate;
-		bool initialized;
 		int count;
-		TaskCompletionSource<bool> initTcs;
+
+		public TextToSpeechService()
+		{
+			ttsInitializer = new TTSInitializer();
+		}
 
 		public async Task SpeakAsync(string text, Locale? locale = null, float? pitch = null, float? speakRate = null, float? volume = null, CancellationToken cancelToken = default(CancellationToken))
 		{
@@ -37,7 +40,7 @@ namespace Xamarin.Services.TextToSpeech
 				this.speakRate = speakRate == null ? 1.0f : speakRate.Value;
 
 				// TODO: need to wait lock so not to break people using queuing mechanism
-				await Init();
+				await ttsInitializer.Init();
 				await Speak(cancelToken);
 			}
 			finally
@@ -53,17 +56,17 @@ namespace Xamarin.Services.TextToSpeech
 
 		private void SetDefaultLanguageNonLollipop()
 		{
+			var textToSpeech = ttsInitializer.TextToSpeech;
 			if (textToSpeech == null)
 				return;
+
 			//disable warning because we are checking ahead of time.
 #pragma warning disable 0618
 			var sdk = (int)global::Android.OS.Build.VERSION.SdkInt;
 			if (sdk >= 18)
 			{
-
 				try
 				{
-
 #if __ANDROID_18__
 					if (textToSpeech.DefaultLanguage == null && textToSpeech.Language != null)
 						textToSpeech.SetLanguage(textToSpeech.Language);
@@ -73,7 +76,6 @@ namespace Xamarin.Services.TextToSpeech
 				}
 				catch
 				{
-
 					if (textToSpeech.Language != null)
 						textToSpeech.SetLanguage(textToSpeech.Language);
 				}
@@ -90,6 +92,8 @@ namespace Xamarin.Services.TextToSpeech
 		{
 			if (string.IsNullOrWhiteSpace(text))
 				return;
+
+			var textToSpeech = ttsInitializer.TextToSpeech;
 
 			if (language.HasValue && !string.IsNullOrWhiteSpace(language.Value.Language))
 			{
@@ -142,23 +146,12 @@ namespace Xamarin.Services.TextToSpeech
 			}
 		}
 
-		void global::Android.Speech.Tts.TextToSpeech.IOnInitListener.OnInit(OperationResult status)
-		{
-			if (status.Equals(OperationResult.Success))
-			{
-				initTcs.TrySetResult(true);
-				initialized = true;
-			}
-			else
-			{
-				initTcs.TrySetException(new ArgumentException("Failed to initialize TTS engine"));
-			}
-		}
-
 		public async Task<IEnumerable<Locale>> GetInstalledLanguagesAsync()
 		{
-			await Init();
-			if (textToSpeech != null && initialized)
+			await ttsInitializer.Init();
+
+			var textToSpeech = ttsInitializer.TextToSpeech;
+			if (textToSpeech != null)
 			{
 				var version = (int)global::Android.OS.Build.VERSION.SdkInt;
 				var isLollipop = version >= 21;
@@ -215,34 +208,74 @@ namespace Xamarin.Services.TextToSpeech
 				return new List<Locale>();
 
 #if __ANDROID_21__
+			var textToSpeech = ttsInitializer.TextToSpeech;
 			return textToSpeech.AvailableLanguages
-			  .Select(a => new Locale { Country = a.Country, Language = a.Language, DisplayName = a.DisplayName });
+				.Select(a => new Locale
+				{
+					Country = a.Country,
+					Language = a.Language,
+					DisplayName = a.DisplayName
+				});
 #endif
-		}
-
-		private Task Init()
-		{
-			if (initialized)
-				return Task.FromResult(true);
-
-			initTcs = new TaskCompletionSource<bool>();
-
-			Console.WriteLine("Current version: " + (int)global::Android.OS.Build.VERSION.SdkInt);
-			global::Android.Util.Log.Info("CrossTTS", "Current version: " + (int)global::Android.OS.Build.VERSION.SdkInt);
-			textToSpeech = new global::Android.Speech.Tts.TextToSpeech(Application.Context, this);
-
-			return initTcs.Task;
 		}
 
 		private void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{
-				textToSpeech?.Stop();
-				textToSpeech?.Dispose();
-				textToSpeech = null;
-				initialized = false;
+				ttsInitializer?.Dispose();
+				ttsInitializer = null;
 			}
+		}
+	}
+
+	internal class TTSInitializer : Java.Lang.Object, global::Android.Speech.Tts.TextToSpeech.IOnInitListener
+	{
+		private TaskCompletionSource<bool> tcs;
+
+		public bool Initialized { get; private set; }
+
+		public global::Android.Speech.Tts.TextToSpeech TextToSpeech { get; private set; }
+
+		public Task Init()
+		{
+			if (Initialized)
+				return Task.FromResult(true);
+
+			tcs = new TaskCompletionSource<bool>();
+
+			Console.WriteLine("Current version: " + (int)global::Android.OS.Build.VERSION.SdkInt);
+			global::Android.Util.Log.Info("CrossTTS", "Current version: " + (int)global::Android.OS.Build.VERSION.SdkInt);
+			TextToSpeech = new global::Android.Speech.Tts.TextToSpeech(Application.Context, this);
+
+			return tcs.Task;
+		}
+
+		public void OnInit(OperationResult status)
+		{
+			if (status.Equals(OperationResult.Success))
+			{
+				tcs.TrySetResult(true);
+				Initialized = true;
+			}
+			else
+			{
+				tcs.TrySetException(new ArgumentException("Failed to initialize TTS engine"));
+			}
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				Initialized = false;
+
+				TextToSpeech?.Stop();
+				TextToSpeech?.Dispose();
+				TextToSpeech = null;
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 

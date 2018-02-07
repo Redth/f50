@@ -13,7 +13,6 @@ namespace Xamarin.Services.Geolocation
 {
 	public partial class GeolocationService
 	{
-		string[] allProviders;
 		LocationManager locationManager;
 
 		GeolocationContinuousListener listener;
@@ -21,6 +20,7 @@ namespace Xamarin.Services.Geolocation
 
 		readonly object positionSync = new object();
 		Position lastPosition;
+		readonly List<string> listeningProviders = new List<string>();
 
 		public GeolocationService()
 		{
@@ -28,6 +28,7 @@ namespace Xamarin.Services.Geolocation
 		}
 
 		string[] Providers => Manager.GetProviders(enabledOnly: false).ToArray();
+
 		string[] IgnoredProviders => new string[] { LocationManager.PassiveProvider, "local_database" };
 
 		public static string[] ProvidersToUse { get; set; } = new string[] { };
@@ -194,12 +195,11 @@ namespace Xamarin.Services.Geolocation
 						cancelToken.Value.Register(() => tcs.TrySetCanceled());
 					}
 
-					EventHandler<PositionEventArgs> gotPosition = null;
-					gotPosition = (s, e) =>
+					void gotPosition(object s, PositionEventArgs e)
 					{
 						tcs.TrySetResult(e.Position);
 						PositionChanged -= gotPosition;
-					};
+					}
 
 					PositionChanged += gotPosition;
 				}
@@ -240,7 +240,6 @@ namespace Xamarin.Services.Geolocation
 			}
 		}
 
-		List<string> listeningProviders { get; } = new List<string>();
 
 		public async Task<bool> StartListeningAsync(TimeSpan minimumTime, double minimumDistance, bool includeHeading = false, ListenerSettings listenerSettings = null)
 		{

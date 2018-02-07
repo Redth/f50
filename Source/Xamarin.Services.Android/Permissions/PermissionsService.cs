@@ -26,7 +26,7 @@ namespace Xamarin.Services.Permissions
 			{
 				if (current == null)
 					current = new PermissionsService();
-				return Current;
+				return current;
 			}
 		}
 

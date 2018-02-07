@@ -15,5 +15,7 @@ namespace Xamarin.Services.TextToSpeech
 		public Task<IEnumerable<Locale>> GetInstalledLanguagesAsync() => throw new NotImplementedException();
 
 		public int MaxSpeechInputLength => throw new NotImplementedException();
+
+		private void OnDispose(bool disposing) => throw new NotImplementedException();
 	}
 }
