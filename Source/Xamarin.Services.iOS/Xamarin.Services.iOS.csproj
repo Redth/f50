@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connectivity\ConnectivityService.cs" />
+    <Compile Include="DeviceInfo\DeviceInfoService.cs" />
     <Compile Include="Messaging\EmailPresenter.cs" />
     <Compile Include="Messaging\EmailAttachment.cs" />
     <Compile Include="Messaging\EmailMessageBuilder.cs" />

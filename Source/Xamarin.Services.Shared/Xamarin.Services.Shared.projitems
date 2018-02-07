@@ -14,6 +14,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityTypeChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Connectivity\IConnectivityService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\IDeviceInfoService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\Idiom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\Platform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\DeviceInfoService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ActivityType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Address.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\GeolocationService.cs" />

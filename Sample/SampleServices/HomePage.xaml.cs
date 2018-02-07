@@ -25,6 +25,9 @@ namespace SampleServices
 				new SampleItem(
 					"Messaging", typeof(MessagingPage),
 					"Demonstrates how easy it is to send messages."),
+				new SampleItem(
+					"Device Info", typeof(DeviceInfoPage),
+					"Demonstrates how easy it is to get information about your device."),
 			};
 		}
 
