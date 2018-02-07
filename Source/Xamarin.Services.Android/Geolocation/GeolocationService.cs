@@ -13,14 +13,11 @@ using Android.Runtime;
 
 namespace Xamarin.Services.Geolocation
 {
-    /// <summary>
-    /// Implementation for Feature
-    /// </summary>
-    public class GeolocationService
+	public class GeolocationService
 #if !EXCLUDE_INTERFACES
-        : IGeolocationService
+		: IGeolocationService
 #endif
-    {
+	{
 		string[] allProviders;
 		LocationManager locationManager;
 
@@ -30,9 +27,6 @@ namespace Xamarin.Services.Geolocation
 		readonly object positionSync = new object();
 		Position lastPosition;
 
-		/// <summary>
-		/// Default constructor
-		/// </summary>
 		public GeolocationService()
 		{
 			DesiredAccuracy = 100;
@@ -40,16 +34,9 @@ namespace Xamarin.Services.Geolocation
 
 		string[] Providers => Manager.GetProviders(enabledOnly: false).ToArray();
 		string[] IgnoredProviders => new string[] { LocationManager.PassiveProvider, "local_database" };
-		
-		/// <summary>
-		/// Gets or sets the location manager providers to ignore when getting postition
-		/// </summary>
+
 		public static string[] ProvidersToUse { get; set; } = new string[] { };
 
-		/// <summary>
-		/// Gets or sets the location manager providers to ignore when doing
-		/// continuous listening
-		/// </summary>
 		public static string[] ProvidersToUseWhileListening { get; set; } = new string[] { };
 
 		LocationManager Manager
@@ -63,39 +50,21 @@ namespace Xamarin.Services.Geolocation
 			}
 		}
 
-		/// <inheritdoc/>
 		public event EventHandler<PositionErrorEventArgs> PositionError;
-		/// <inheritdoc/>
+
 		public event EventHandler<PositionEventArgs> PositionChanged;
-		/// <inheritdoc/>
+
 		public bool IsListening => listener != null;
 
+		public double DesiredAccuracy { get; set; }
 
-		/// <inheritdoc/>
-		public double DesiredAccuracy
-		{
-			get;
-			set;
-		}
-
-		/// <inheritdoc/>
 		public bool IsHeadingSupported => true;
 
-
-		/// <inheritdoc/>
 		public bool IsSupported => Providers.Length > 0;
 
-
-		/// <inheritdoc/>
 		public bool IsEnabled => Providers.Any(p => !IgnoredProviders.Contains(p) &&
 			Manager.IsProviderEnabled(p));
 
-
-		/// <summary>
-		/// Gets the last known and most accurate location.
-		/// This is usually cached and best to display first before querying for full position.
-		/// </summary>
-		/// <returns>Best and most recent location or null if none found</returns>
 		public async Task<Position> GetLastKnownLocationAsync()
 		{
 			var hasPermission = await CheckPermissions();
@@ -121,7 +90,7 @@ namespace Xamarin.Services.Geolocation
 			{
 				Console.WriteLine("Currently does not have Location permissions, requesting permissions");
 
-                var request = await PermissionsService.Current.RequestPermissionsAsync(Xamarin.Services.Permissions.Permission.Location);
+				var request = await PermissionsService.Current.RequestPermissionsAsync(Xamarin.Services.Permissions.Permission.Location);
 
 				if (request[Xamarin.Services.Permissions.Permission.Location] != Xamarin.Services.Permissions.PermissionStatus.Granted)
 				{
@@ -133,14 +102,6 @@ namespace Xamarin.Services.Geolocation
 			return true;
 		}
 
-
-		/// <summary>
-		/// Gets position async with specified parameters
-		/// </summary>
-		/// <param name="timeout">Timeout to wait, Default Infinite</param>
-		/// <param name="cancelToken">Cancelation token</param>
-		/// <param name="includeHeading">If you would like to include heading</param>
-		/// <returns>Position</returns>
 		public async Task<Position> GetPositionAsync(TimeSpan? timeout, CancellationToken? cancelToken = null, bool includeHeading = false)
 		{
 			var timeoutMilliseconds = timeout.HasValue ? (int)timeout.Value.TotalMilliseconds : Timeout.Infinite;
@@ -173,7 +134,7 @@ namespace Xamarin.Services.Geolocation
 						providers.Add(provider);
 					}
 				}
-				
+
 
 				void SingleListnerFinishCallback()
 				{
@@ -184,9 +145,9 @@ namespace Xamarin.Services.Geolocation
 						Manager.RemoveUpdates(singleListener);
 				}
 
-				singleListener = new GeolocationSingleListener(Manager, 
+				singleListener = new GeolocationSingleListener(Manager,
 					(float)DesiredAccuracy,
-					timeoutMilliseconds, 
+					timeoutMilliseconds,
 					providers.Where(Manager.IsProviderEnabled),
 					finishedCallback: SingleListnerFinishCallback);
 
@@ -260,53 +221,36 @@ namespace Xamarin.Services.Geolocation
 			return await tcs.Task;
 		}
 
-		/// <summary>
-		/// Retrieve addresses for position.
-		/// </summary>
-		/// <param name="position">Desired position (latitude and longitude)</param>
-		/// <returns>Addresses of the desired position</returns>
 		public async Task<IEnumerable<Address>> GetAddressesForPositionAsync(Position position, string mapKey = null)
 		{
 			if (position == null)
-                throw new ArgumentNullException(nameof(position));
+				throw new ArgumentNullException(nameof(position));
 
-            using (var geocoder = new Geocoder(Application.Context))
-            {
-                var addressList = await geocoder.GetFromLocationAsync(position.Latitude, position.Longitude, 10);
-                return addressList.ToAddresses();
-            }
+			using (var geocoder = new Geocoder(Application.Context))
+			{
+				var addressList = await geocoder.GetFromLocationAsync(position.Latitude, position.Longitude, 10);
+				return addressList.ToAddresses();
+			}
 		}
 
-        /// <summary>
-        /// Retrieve positions for address.
-        /// </summary>
-        /// <param name="address">Desired address</param>
-        /// <param name="mapKey">Map Key required only on UWP</param>
-        /// <returns>Positions of the desired address</returns>
-        public async Task<IEnumerable<Position>> GetPositionsForAddressAsync(string address, string mapKey = null)
-        {
-            if (address == null)
-                throw new ArgumentNullException(nameof(address));
+		public async Task<IEnumerable<Position>> GetPositionsForAddressAsync(string address, string mapKey = null)
+		{
+			if (address == null)
+				throw new ArgumentNullException(nameof(address));
 
-            using (var geocoder = new Geocoder(Application.Context))
-            {
-                var addressList = await geocoder.GetFromLocationNameAsync(address, 10);
-                return addressList.Select(p => new Position
-                {
-                    Latitude = p.Latitude,
-                    Longitude = p.Longitude
-                });
-            }
-        }
+			using (var geocoder = new Geocoder(Application.Context))
+			{
+				var addressList = await geocoder.GetFromLocationNameAsync(address, 10);
+				return addressList.Select(p => new Position
+				{
+					Latitude = p.Latitude,
+					Longitude = p.Longitude
+				});
+			}
+		}
 
 		List<string> listeningProviders { get; } = new List<string>();
-		/// <summary>
-		/// Start listening for changes
-		/// </summary>
-		/// <param name="minimumTime">Time</param>
-		/// <param name="minimumDistance">Distance</param>
-		/// <param name="includeHeading">Include heading or not</param>
-		/// <param name="listenerSettings">Optional settings (iOS only)</param>
+
 		public async Task<bool> StartListeningAsync(TimeSpan minimumTime, double minimumDistance, bool includeHeading = false, ListenerSettings listenerSettings = null)
 		{
 			var hasPermission = await CheckPermissions();
@@ -332,29 +276,29 @@ namespace Xamarin.Services.Geolocation
 			for (var i = 0; i < providers.Length; ++i)
 			{
 				var provider = providers[i];
-				
+
 				//we have limited set of providers
-				if(ProvidersToUseWhileListening != null &&
+				if (ProvidersToUseWhileListening != null &&
 					ProvidersToUseWhileListening.Length > 0)
 				{
 					//the provider is not in the list, so don't use it.
 					if (!ProvidersToUseWhileListening.Contains(provider))
 						continue;
 				}
-				
+
 
 				listeningProviders.Add(provider);
 				Manager.RequestLocationUpdates(provider, (long)minTimeMilliseconds, (float)minimumDistance, listener, looper);
 			}
 			return true;
 		}
-		/// <inheritdoc/>
+
 		public Task<bool> StopListeningAsync()
 		{
 			if (listener == null)
 				return Task.FromResult(true);
 
-			if(listeningProviders == null)
+			if (listeningProviders == null)
 				return Task.FromResult(true);
 
 			var providers = listeningProviders;
@@ -377,8 +321,6 @@ namespace Xamarin.Services.Geolocation
 			return Task.FromResult(true);
 		}
 
-
-		/// <inheritdoc/>
 		private void OnListenerPositionChanged(object sender, PositionEventArgs e)
 		{
 			if (!IsListening) // ignore anything that might come in afterwards
@@ -391,7 +333,7 @@ namespace Xamarin.Services.Geolocation
 				PositionChanged?.Invoke(this, e);
 			}
 		}
-		/// <inheritdoc/>
+
 		private async void OnListenerPositionError(object sender, PositionErrorEventArgs e)
 		{
 			await StopListeningAsync();
