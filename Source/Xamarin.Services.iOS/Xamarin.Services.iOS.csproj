@@ -78,6 +78,9 @@
     <Compile Include="Permissions\PermissionsService.cs" />
     <Compile Include="Connectivity\Reachability.cs" />
     <Compile Include="Settings\SettingsService.cs" />
+    <Compile Include="Sharing\ShareActivityItemSource.cs" />
+    <Compile Include="Sharing\ShareColorExtensions.cs" />
+    <Compile Include="Sharing\SharingService.cs" />
     <Compile Include="TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <Import Project="..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems" Label="Shared" Condition="Exists('..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems')" />

@@ -54,6 +54,7 @@
     <Compile Include="Permissions\PermissionsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\SettingsService.cs" />
+    <Compile Include="Sharing\SharingService.cs" />
     <Compile Include="TextToSpeech\TextToSpeechService.cs" />
     <EmbeddedResource Include="Properties\Xamarin.Services.UWP.rd.xml" />
   </ItemGroup>

@@ -31,6 +31,9 @@ namespace SampleServices
 				new SampleItem(
 					"Device Motion", typeof(DeviceMotionPage),
 					"Demonstrates how easy it is to get information about device motion."),
+				new SampleItem(
+					"Sharing", typeof(SharingPage),
+					"Demonstrates how easy it is to share."),
 			};
 		}
 

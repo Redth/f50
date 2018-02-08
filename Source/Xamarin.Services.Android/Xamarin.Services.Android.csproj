@@ -46,6 +46,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Android.Support.Compat" Version="25.4.0.2" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="25.4.0.2" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="25.4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connectivity\ConnectivityChangeBroadcastReceiver.cs" />
@@ -71,6 +72,8 @@
     <Compile Include="Geolocation\GeolocationUtils.cs" />
     <Compile Include="Permissions\PermissionsService.cs" />
     <Compile Include="Settings\SettingsService.cs" />
+    <Compile Include="Sharing\ShareColorExtensions.cs" />
+    <Compile Include="Sharing\SharingService.cs" />
     <Compile Include="TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <Import Project="..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems" Label="Shared" Condition="Exists('..\Xamarin.Services.Shared\Xamarin.Services.Shared.projitems')" />

@@ -47,6 +47,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Settings\ISettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\BrowserOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\SharingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ISharingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareAppControlType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareRectangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareUIActivityType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\ITextToSpeechService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\Locale.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\TextToSpeechService.cs" />

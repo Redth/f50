@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleServices.SharingPage"
+             Title="Sharing">
+
+    <ContentPage Title="Share" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter a title" x:Name="titleText" />
+            <Entry Placeholder="Enter a URL" x:Name="urlText" Keyboard="Url" />
+            <Entry Placeholder="Enter a message body" x:Name="bodyText" VerticalOptions="FillAndExpand" />
+            <Button Text="Share" Clicked="Share_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Open Browser" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter a URL" x:Name="browserText" Keyboard="Url" />
+            <Button Text="Open" Clicked="OpenBrowser_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+    <ContentPage Title="Copy" Padding="12">
+        <StackLayout>
+            <Entry Placeholder="Enter text" x:Name="clipboardText" />
+            <Button Text="Copy to clipboard" Clicked="Copy_Clicked" />
+        </StackLayout>
+    </ContentPage>
+
+</TabbedPage>
