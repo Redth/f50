@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleServices.DeviceMotionPage"
+             Title="Device Motion"
+             Padding="12">
+    <StackLayout>
+        <Label Text="Accelerometer" FontAttributes="Bold" />
+        <Label Text="" x:Name="labelAcc" />
+
+        <Label Text="Compass" FontAttributes="Bold" />
+        <Label Text="" x:Name="labelCompass" />
+
+        <Label Text="Gyroscope" FontAttributes="Bold" />
+        <Label Text="" x:Name="labelGyro" />
+
+        <Label Text="Magnetometer" FontAttributes="Bold" />
+        <Label Text="" x:Name="labelMagnet" />
+    </StackLayout>
+</ContentPage>

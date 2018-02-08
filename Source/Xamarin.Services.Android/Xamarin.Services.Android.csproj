@@ -52,6 +52,7 @@
     <Compile Include="Connectivity\ConnectivityService.cs" />
     <Compile Include="Connectivity\Extensions.cs" />
     <Compile Include="DeviceInfo\DeviceInfoService.cs" />
+    <Compile Include="DeviceMotion\DeviceMotionService.cs" />
     <Compile Include="Messaging\EmailAttachment.cs" />
     <Compile Include="Messaging\EmailMessageBuilder.cs" />
     <Compile Include="Messaging\EmailService.cs" />

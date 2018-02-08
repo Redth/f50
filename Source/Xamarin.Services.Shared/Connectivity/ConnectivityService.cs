@@ -19,6 +19,8 @@ namespace Xamarin.Services.Connectivity
 
 		public event ConnectivityTypeChangedEventHandler ConnectivityTypeChanged;
 
+		partial void OnDispose(bool disposing);
+
 		public virtual void Dispose(bool disposing)
 		{
 			if (!disposed)

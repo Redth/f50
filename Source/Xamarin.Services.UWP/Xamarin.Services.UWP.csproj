@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Connectivity\ConnectivityService.cs" />
     <Compile Include="DeviceInfo\DeviceInfoService.cs" />
+    <Compile Include="DeviceMotion\DeviceMotionService.cs" />
     <Compile Include="Geolocation\GeolocationService.cs" />
     <Compile Include="Geolocation\GeolocationUtils.cs" />
     <Compile Include="Geolocation\Timeout.cs" />

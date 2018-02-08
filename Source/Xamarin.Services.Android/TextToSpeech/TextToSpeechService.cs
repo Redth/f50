@@ -219,7 +219,7 @@ namespace Xamarin.Services.TextToSpeech
 #endif
 		}
 
-		private void OnDispose(bool disposing)
+		partial void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{

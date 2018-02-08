@@ -146,7 +146,7 @@ namespace Xamarin.Services.TextToSpeech
 			currentSpeak?.TrySetCanceled();
 		}
 
-		private void OnDispose(bool disposing)
+		partial void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{

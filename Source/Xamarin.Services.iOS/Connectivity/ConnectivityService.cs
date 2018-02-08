@@ -154,7 +154,7 @@ namespace Xamarin.Services.Connectivity
 			previousInternetStatus = internetStatus;
 		}
 
-		private void OnDispose(bool disposing)
+		partial void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{

@@ -158,7 +158,7 @@ namespace Xamarin.Services.Connectivity
 			}
 		}
 
-		private void OnDispose(bool disposing)
+		partial void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{

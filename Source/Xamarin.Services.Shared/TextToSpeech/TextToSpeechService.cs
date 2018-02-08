@@ -9,6 +9,8 @@ namespace Xamarin.Services.TextToSpeech
 	{
 		private bool disposed;
 
+		partial void OnDispose(bool disposing);
+
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!disposed)

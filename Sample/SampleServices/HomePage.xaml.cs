@@ -28,6 +28,9 @@ namespace SampleServices
 				new SampleItem(
 					"Device Info", typeof(DeviceInfoPage),
 					"Demonstrates how easy it is to get information about your device."),
+				new SampleItem(
+					"Device Motion", typeof(DeviceMotionPage),
+					"Demonstrates how easy it is to get information about device motion."),
 			};
 		}
 

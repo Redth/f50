@@ -152,7 +152,7 @@ namespace Xamarin.Services.TextToSpeech
 
 		public int MaxSpeechInputLength => -1;
 
-		private void OnDispose(bool disposing)
+		partial void OnDispose(bool disposing)
 		{
 			if (disposing)
 			{
