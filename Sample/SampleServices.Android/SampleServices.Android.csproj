@@ -50,6 +50,7 @@
     <PackageReference Include="Xamarin.Android.Support.Compat" Version="26.1.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Core.UI" Version="26.1.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="26.1.0.1" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="26.1.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="26.1.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Fragment" Version="26.1.0.1" />
     <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="26.1.0.1" />

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleServices.DeviceInfoPage"
+             Title="Device Info"
+             Padding="12">
+    <StackLayout>
+        <Label Text="ID:" FontAttributes="Bold" />
+        <Label Text="{Binding Id}" />
+
+        <Label Text="Model:" FontAttributes="Bold" />
+        <Label Text="{Binding Model}" />
+
+        <Label Text="Manufacturer:" FontAttributes="Bold" />
+        <Label Text="{Binding Manufacturer}" />
+
+        <Label Text="Device Name:" FontAttributes="Bold" />
+        <Label Text="{Binding DeviceName}" />
+
+        <Label Text="Platform:" FontAttributes="Bold" />
+        <Label Text="{Binding Platform}" />
+
+        <Label Text="Platform:" FontAttributes="Bold" />
+        <Label Text="{Binding Version}" />
+    </StackLayout>
+</ContentPage>

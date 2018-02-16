@@ -9,16 +9,56 @@
     <Import_RootNamespace>Xamarin.Services</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectionType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\ConnectivityTypeChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Connectivity\IConnectivityService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\IDeviceInfoService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\Idiom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\Platform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo\DeviceInfoService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\DeviceMotionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\IDeviceMotionService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\MotionSensorDelay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\MotionSensorType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\MotionSensorValueType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\MotionValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceMotion\MotionVector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ActivityType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Address.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Geolocation\GeolocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\IGeolocationService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\ListenerSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Geolocation\Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\EmailAttachment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\EmailMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\EmailMessageBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\EmailService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\IEmailMessageBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\IEmailService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\PhoneDialerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\IPhoneDialerService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\ISmsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Messaging\SmsService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Permissions\IPermissions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionEnums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Permissions\PermissionsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\SettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Settings\ISettingsService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\BrowserOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\SharingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ISharingService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareAppControlType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareColor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareMessage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareRectangle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sharing\ShareUIActivityType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\ITextToSpeechService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\Locale.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TextToSpeech\TextToSpeechService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildThisFileDirectory)..\Xamarin.Services.Build.targets" />
 </Project>
